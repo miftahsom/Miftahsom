@@ -1,40 +1,26 @@
 import ArticleCard from './ArticleCard';
-import heroHealthImage from '@/assets/hero-health-nutrition.jpg';
-import heroParentingImage from '@/assets/hero-parenting.jpg';
-import heroQuranImage from '@/assets/hero-quran.jpg';
 import { useTranslation } from '@/contexts/TranslationContext';
+import { useEffect, useState } from 'react';
+import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 
 const HeroSection = () => {
   const { t } = useTranslation();
   
-  // Mock data - exactly matching Al Jazeera layout structure
-  const heroArticle = {
-    title: t('hero.main-title'),
-    excerpt: t('hero.main-excerpt'),
-    image: heroHealthImage,
-    category: t('category.health.title'),
-    date: "2025-01-15",
-    href: "/articles/essential-nutrition-guide"
-  };
+  const [posts, setPosts] = useState<BlogPost[]>([]);
 
-  const sideArticles = [
-    {
-      title: t('hero.side1-title'),
-      excerpt: t('hero.side1-excerpt'),
-      image: heroParentingImage,
-      category: t('category.parenting.title'), 
-      date: "2025-01-14",
-      href: "/articles/modern-parenting-balance"
-    },
-    {
-      title: t('hero.side2-title'),
-      excerpt: t('hero.side2-excerpt'),
-      image: heroQuranImage,
-      category: t('category.quran.title'),
-      date: "2025-01-13", 
-      href: "/articles/quranic-values-daily-life"
-    }
-  ];
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const data = await loadBlogPosts();
+      if (mounted) setPosts(data);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const hero = posts[0];
+  const side = posts.slice(1, 3);
 
   return (
     <section className="container mx-auto px-4 lg:px-6">
@@ -47,20 +33,22 @@ const HeroSection = () => {
         
         {/* Featured Article - Large */}
         <div className="mb-6">
-          <ArticleCard
-            variant="hero"
-            title={heroArticle.title}
-            excerpt={heroArticle.excerpt}
-            image={heroArticle.image}
-            category={heroArticle.category}
-            date={heroArticle.date}
-            href={heroArticle.href}
-          />
+          {hero && (
+            <ArticleCard
+              variant="hero"
+              title={hero.title}
+              excerpt={hero.excerpt}
+              image={hero.image}
+              category={hero.category}
+              date={hero.date}
+              href={`/articles/${hero.slug}`}
+            />
+          )}
         </div>
 
         {/* Side Articles - Horizontal Layout */}
         <div className="space-y-3">
-          {sideArticles.map((article, index) => (
+          {side.map((article, index) => (
             <ArticleCard
               key={index}
               variant="mobile-horizontal"
@@ -69,7 +57,7 @@ const HeroSection = () => {
               image={article.image}
               category={article.category}
               date={article.date}
-              href={article.href}
+              href={`/articles/${article.slug}`}
             />
           ))}
         </div>
@@ -80,7 +68,7 @@ const HeroSection = () => {
         <div className="grid grid-cols-3 gap-8">
           {/* Left Column: Two Stacked Articles */}
           <div className="col-span-1 space-y-6">
-            {sideArticles.map((article, index) => (
+            {side.map((article, index) => (
               <ArticleCard
                 key={index}
                 variant="small"
@@ -89,22 +77,24 @@ const HeroSection = () => {
                 image={article.image}
                 category={article.category}
                 date={article.date}
-                href={article.href}
+                href={`/articles/${article.slug}`}
               />
             ))}
           </div>
 
           {/* Right Column: Large Hero Article */}
           <div className="col-span-2">
-            <ArticleCard
-              variant="hero"
-              title={heroArticle.title}
-              excerpt={heroArticle.excerpt}
-              image={heroArticle.image}
-              category={heroArticle.category}
-              date={heroArticle.date}
-              href={heroArticle.href}
-            />
+            {hero && (
+              <ArticleCard
+                variant="hero"
+                title={hero.title}
+                excerpt={hero.excerpt}
+                image={hero.image}
+                category={hero.category}
+                date={hero.date}
+                href={`/articles/${hero.slug}`}
+              />
+            )}
           </div>
         </div>
       </div>

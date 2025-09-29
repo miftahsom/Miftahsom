@@ -31,22 +31,41 @@ export interface HomePage {
 // In a real implementation, you would fetch this from your CMS API
 // For now, we'll use the static content we created
 export const loadBlogPosts = async (): Promise<BlogPost[]> => {
-  // This would typically fetch from your CMS API
-  // For now, return the sample data
-  return [
-    {
-      title: "Essential Nutrition Guide: Building Healthy Eating Habits for the Whole Family",
-      date: "2025-01-15",
-      image: "/images/hero-health-nutrition.jpg",
-      category: "Health",
-      excerpt: "Discover comprehensive strategies for maintaining optimal health through balanced nutrition, including practical meal planning tips and evidence-based dietary recommendations that work for busy families.",
-      author: "Dr. Amina Hassan",
-      readTime: "8 min read",
-      language: "en",
-      slug: "essential-nutrition-guide",
-      body: "# Essential Nutrition Guide..."
-    }
-  ];
+  const files = import.meta.glob("../content/blog/**/*.md", { as: "raw" });
+  const entries = Object.entries(files);
+  if (entries.length === 0) return [];
+
+  const { default: matter } = await import("gray-matter");
+
+  const posts: BlogPost[] = await Promise.all(
+    entries.map(async ([path, loader]) => {
+      const raw = await (loader as () => Promise<string>)();
+      const parsed = matter(raw);
+      const data = parsed.data as Partial<BlogPost> & { date?: string };
+      const body = parsed.content.trim();
+
+      const fileName = path.split("/").pop() || "";
+      const withoutExt = fileName.replace(/\.md$/i, "");
+      // If filename starts with YYYY-MM-DD-, strip the date for slug
+      const slug = withoutExt.replace(/^\d{4}-\d{2}-\d{2}-/, "");
+
+      return {
+        title: data.title ?? slug,
+        date: data.date ?? new Date().toISOString().slice(0, 10),
+        image: data.image ?? "/images/placeholder.svg",
+        category: data.category ?? "General",
+        excerpt: data.excerpt ?? "",
+        author: data.author ?? "",
+        readTime: data.readTime ?? "",
+        language: (data as any).language ?? "en",
+        slug,
+        body
+      } as BlogPost;
+    })
+  );
+
+  posts.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+  return posts;
 };
 
 export const loadCategories = async (): Promise<Category[]> => {

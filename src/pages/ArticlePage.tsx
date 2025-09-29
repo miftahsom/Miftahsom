@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import Sidebar from '@/components/Sidebar';
@@ -7,42 +8,25 @@ import { useTranslation } from '@/contexts/TranslationContext';
 import heroHealthImage from '@/assets/hero-health-nutrition.jpg';
 import heroParentingImage from '@/assets/hero-parenting.jpg';
 import heroQuranImage from '@/assets/hero-quran.jpg';
+import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 
 const ArticlePage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { t } = useTranslation();
 
-  // Mock article data
-  const article = {
-    title: "Essential Nutrition Guide: Building Healthy Eating Habits for the Whole Family",
-    subtitle: "Discover comprehensive strategies for maintaining optimal health through balanced nutrition, including practical meal planning tips and evidence-based dietary recommendations.",
-    image: heroHealthImage,
-    category: t('category.health.title'),
-    date: "2025-01-15",
-    author: "Dr. Amina Hassan",
-    readTime: `8 ${t('article.read-time')}`,
-    content: `
-      <p>Maintaining a healthy diet for your family can seem overwhelming in today's fast-paced world. However, with the right strategies and understanding of nutritional fundamentals, you can create sustainable eating habits that benefit everyone in your household.</p>
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const data = await loadBlogPosts();
+      if (mounted) setPosts(data);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
-      <h2>Understanding Nutritional Basics</h2>
-      <p>A balanced diet consists of five main food groups: fruits, vegetables, grains, protein foods, and dairy. Each group provides essential nutrients that our bodies need to function optimally. The key is to consume foods from all groups in appropriate proportions.</p>
-
-      <h3>The Foundation: Fruits and Vegetables</h3>
-      <p>Fruits and vegetables should form the foundation of your family's diet. They provide essential vitamins, minerals, fiber, and antioxidants that protect against chronic diseases. Aim to fill half your plate with colorful fruits and vegetables at each meal.</p>
-
-      <h3>Whole Grains for Sustained Energy</h3>
-      <p>Choose whole grains over refined grains whenever possible. Brown rice, quinoa, whole wheat bread, and oats provide more fiber, vitamins, and minerals than their processed counterparts. These foods help maintain steady blood sugar levels and provide lasting energy.</p>
-
-      <h2>Meal Planning Strategies</h2>
-      <p>Successful family nutrition starts with planning. Dedicate time each week to plan meals, create shopping lists, and prepare ingredients in advance. This approach reduces stress, saves money, and ensures your family eats nutritious meals consistently.</p>
-
-      <h3>Batch Cooking and Preparation</h3>
-      <p>Prepare large batches of healthy staples like grains, legumes, and chopped vegetables on weekends. This investment of time pays dividends throughout the week when you can quickly assemble nutritious meals.</p>
-
-      <h2>Creating Healthy Habits</h2>
-      <p>Building lasting healthy eating habits requires patience and consistency. Start with small changes and gradually incorporate more nutritious foods into your family's routine. Remember, the goal is progress, not perfection.</p>
-    `
-  };
+  const article = useMemo(() => posts.find(p => p.slug === slug), [posts, slug]);
 
   const relatedArticles = [
     {
@@ -115,13 +99,15 @@ const ArticlePage = () => {
             </div>
 
             {/* Featured Image */}
-            <div className="mb-8">
-              <img 
-                src={article.image} 
-                alt={article.title}
-                className="w-full h-64 lg:h-80 object-cover rounded-large"
-              />
-            </div>
+            {article?.image && (
+              <div className="mb-8">
+                <img 
+                  src={article.image}
+                  alt={article.title}
+                  className="w-full h-64 lg:h-80 object-cover rounded-large"
+                />
+              </div>
+            )}
 
             {/* Social Share Bar - Floating Left */}
             <div className="hidden lg:block fixed left-8 top-1/2 transform -translate-y-1/2 z-10">
@@ -143,8 +129,8 @@ const ArticlePage = () => {
 
             {/* Article Content */}
             <div 
-              className="prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: article.content }}
+              className="prose prose-lg max-w-none whitespace-pre-wrap"
+              dangerouslySetInnerHTML={{ __html: article?.body || '' }}
               style={{
                 lineHeight: '1.7',
                 fontSize: '1.125rem'
