@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: nduatitrevis-cpu/miftah-health-blog # Path to your GitHub repo
   branch: main # Branch to update (optional; defaults to master)
 
 media_folder: "public/images" # Media files will be stored in the repo under public/images
