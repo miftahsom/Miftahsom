@@ -54,7 +54,7 @@ export const loadBlogPosts = async (): Promise<BlogPost[]> => {
         title: data.title ?? slug,
         date: data.date ?? new Date().toISOString().slice(0, 10),
         image: data.image ?? "/images/placeholder.svg",
-        category: data.category ?? "General",
+        category: (data.category as string | undefined) ?? "General",
         excerpt: data.excerpt ?? "",
         author: data.author ?? "",
         readTime: data.readTime ?? "",

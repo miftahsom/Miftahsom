@@ -75,7 +75,10 @@ const CategoryPage = () => {
       'baby-names': 'Baby Names'
     };
     const desired = routeToCategory[currentCategory] || info.title;
-    return allPosts.filter(p => p.category === desired);
+    const normalize = (v: string) => v.trim().toLowerCase();
+    const desiredNorm = normalize(desired);
+    const filtered = allPosts.filter(p => normalize(p.category) === desiredNorm);
+    return filtered.length > 0 ? filtered : allPosts; // fallback to avoid empty grids
   }, [allPosts, currentCategory, info.title]);
 
   return (
