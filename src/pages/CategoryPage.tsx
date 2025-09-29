@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import ArticleCard from '@/components/ArticleCard';
@@ -8,6 +9,7 @@ import heroParentingImage from '@/assets/hero-parenting.jpg';
 import heroQuranImage from '@/assets/hero-quran.jpg';
 import heroEducationImage from '@/assets/hero-education.jpg';
 import heroBabyNamesImage from '@/assets/hero-baby-names.jpg';
+import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 
 const CategoryPage = () => {
   const { category } = useParams<{ category: string }>();
@@ -51,33 +53,30 @@ const CategoryPage = () => {
     image: heroHealthImage
   };
 
-  // Mock articles for the category
-  const categoryArticles = [
-    {
-      title: `Essential ${info.title} Tips for Modern Families`,
-      excerpt: `Discover practical advice and expert insights for ${info.title.toLowerCase()} that fits into your busy lifestyle.`,
-      image: info.image,
-      category: info.title,
-      date: "2025-01-15",
-      href: `/articles/essential-${currentCategory}-tips`
-    },
-    {
-      title: `Understanding ${info.title} in Today's World`,
-      excerpt: `Comprehensive guide to ${info.title.toLowerCase()} with evidence-based recommendations and cultural wisdom.`,
-      image: info.image,
-      category: info.title,
-      date: "2025-01-14",
-      href: `/articles/understanding-${currentCategory}`
-    },
-    {
-      title: `${info.title} Guidelines for Beginners`,
-      excerpt: `Start your ${info.title.toLowerCase()} journey with these foundational principles and practical steps.`,
-      image: info.image,
-      category: info.title,
-      date: "2025-01-13",
-      href: `/articles/${currentCategory}-guidelines-beginners`
-    },
-  ];
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const data = await loadBlogPosts();
+      if (mounted) setAllPosts(data);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const categoryArticles = useMemo(() => {
+    // Map route to frontmatter category names
+    const routeToCategory: Record<string, string> = {
+      'health': 'Health',
+      'parenting': 'Parenting',
+      'education': 'Education',
+      'quran': 'Quran',
+      'baby-names': 'Baby Names'
+    };
+    const desired = routeToCategory[currentCategory] || info.title;
+    return allPosts.filter(p => p.category === desired);
+  }, [allPosts, currentCategory, info.title]);
 
   return (
     <Layout>
@@ -107,7 +106,7 @@ const CategoryPage = () => {
                   image={article.image}
                   category={article.category}
                   date={article.date}
-                  href={article.href}
+                  href={`/articles/${article.slug}`}
                 />
               ))}
             </div>
