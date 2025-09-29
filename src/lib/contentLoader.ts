@@ -31,18 +31,19 @@ export interface HomePage {
 // In a real implementation, you would fetch this from your CMS API
 // For now, we'll use the static content we created
 export const loadBlogPosts = async (): Promise<BlogPost[]> => {
-  const files = import.meta.glob("../content/blog/**/*.md", { as: "raw" });
+  const files = import.meta.glob("../content/blog/**/*.md", { query: "?raw", import: "default" });
   const entries = Object.entries(files);
   if (entries.length === 0) return [];
 
   const { default: matter } = await import("gray-matter");
+  const { marked } = await import("marked");
 
   const posts: BlogPost[] = await Promise.all(
     entries.map(async ([path, loader]) => {
       const raw = await (loader as () => Promise<string>)();
       const parsed = matter(raw);
       const data = parsed.data as Partial<BlogPost> & { date?: string };
-      const body = parsed.content.trim();
+      const body = marked.parse(parsed.content.trim());
 
       const fileName = path.split("/").pop() || "";
       const withoutExt = fileName.replace(/\.md$/i, "");

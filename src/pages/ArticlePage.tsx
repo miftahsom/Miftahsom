@@ -27,6 +27,16 @@ const ArticlePage = () => {
   }, []);
 
   const article = useMemo(() => posts.find(p => p.slug === slug), [posts, slug]);
+  if (!article) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-16">
+          <h1 className="text-2xl font-bold mb-4">{t('article.not-found') || 'Article not found'}</h1>
+          <p className="text-text-secondary">{t('article.not-found-desc') || 'The article you are looking for may have been moved or unpublished.'}</p>
+        </div>
+      </Layout>
+    );
+  }
 
   const relatedArticles = [
     {
