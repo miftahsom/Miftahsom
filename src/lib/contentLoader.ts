@@ -34,9 +34,11 @@ export interface HomePage {
 import matter from 'gray-matter';
 import { marked } from 'marked';
 
-// Glob import markdown files as raw strings at build-time
-// Use Vite's `{ as: 'raw', eager: true }` so content is bundled at build time
-const blogModules = import.meta.glob('../content/blog/**/*.md', { as: 'raw', eager: true }) as Record<string, string>;
+// Glob import markdown files as raw strings at build-time.
+// Prefer Vite's query-based API per deprecation notice.
+const modulesRelative = import.meta.glob('../content/blog/**/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const modulesAbsolute = import.meta.glob('/src/content/blog/**/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const blogModules: Record<string, string> = { ...modulesRelative, ...modulesAbsolute };
 // Debug: log discovered markdown files at build/runtime
 try {
   const discoveredKeys = Object.keys(blogModules);
