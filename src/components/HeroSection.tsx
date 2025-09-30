@@ -1,43 +1,33 @@
+import { useEffect, useMemo, useState } from 'react';
 import ArticleCard from './ArticleCard';
 import heroHealthImage from '@/assets/hero-health-nutrition.jpg';
 import heroParentingImage from '@/assets/hero-parenting.jpg';
 import heroQuranImage from '@/assets/hero-quran.jpg';
 import { useTranslation } from '@/contexts/TranslationContext';
+import { loadBlogPosts, BlogPost } from '@/lib/contentLoader';
 
 const HeroSection = () => {
   const { t } = useTranslation();
   
-  // Mock data - exactly matching Al Jazeera layout structure
-  const heroArticle = {
-    title: t('hero.main-title'),
-    excerpt: t('hero.main-excerpt'),
-    image: heroHealthImage,
-    category: t('category.health.title'),
-    categorySlug: 'health' as const,
-    date: "2025-01-15",
-    href: "/articles/essential-nutrition-guide"
-  };
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const sideArticles = [
-    {
-      title: t('hero.side1-title'),
-      excerpt: t('hero.side1-excerpt'),
-      image: heroParentingImage,
-      category: t('category.parenting.title'),
-      categorySlug: 'parenting' as const,
-      date: "2025-01-14",
-      href: "/articles/modern-parenting-balance"
-    },
-    {
-      title: t('hero.side2-title'),
-      excerpt: t('hero.side2-excerpt'),
-      image: heroQuranImage,
-      category: t('category.quran.title'),
-      categorySlug: 'quran' as const,
-      date: "2025-01-13", 
-      href: "/articles/quranic-values-daily-life"
-    }
-  ];
+  useEffect(() => {
+    (async () => {
+      try {
+        const all = await loadBlogPosts();
+        setPosts(all);
+      } catch (e) {
+        setError('load-failed');
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  const featured = useMemo(() => posts[0], [posts]);
+  const sides = useMemo(() => posts.slice(1, 3), [posts]);
 
   return (
     <section className="container mx-auto px-4 lg:px-6">
@@ -50,31 +40,33 @@ const HeroSection = () => {
         
         {/* Featured Article - Large */}
         <div className="mb-6">
-          <ArticleCard
-            variant="hero"
-            title={heroArticle.title}
-            excerpt={heroArticle.excerpt}
-            image={heroArticle.image}
-            category={heroArticle.category}
-            categorySlug={heroArticle.categorySlug}
-            date={heroArticle.date}
-            href={heroArticle.href}
-          />
+          {featured ? (
+            <ArticleCard
+              variant="hero"
+              title={featured.title}
+              excerpt={featured.excerpt}
+              image={featured.image || heroHealthImage}
+              category={featured.category}
+              categorySlug={'health'}
+              date={featured.date}
+              href={`/articles/${featured.slug}`}
+            />
+          ) : null}
         </div>
 
         {/* Side Articles - Horizontal Layout */}
         <div className="space-y-3">
-          {sideArticles.map((article, index) => (
+          {sides.map((p, index) => (
             <ArticleCard
               key={index}
               variant="mobile-horizontal"
-              title={article.title}
-              excerpt={article.excerpt}
-              image={article.image}
-              category={article.category}
-                categorySlug={article.categorySlug}
-              date={article.date}
-              href={article.href}
+              title={p.title}
+              excerpt={p.excerpt}
+              image={p.image || heroParentingImage}
+              category={p.category}
+              categorySlug={'parenting'}
+              date={p.date}
+              href={`/articles/${p.slug}`}
             />
           ))}
         </div>
@@ -85,33 +77,35 @@ const HeroSection = () => {
         <div className="grid grid-cols-3 gap-8">
           {/* Left Column: Two Stacked Articles */}
           <div className="col-span-1 space-y-6">
-            {sideArticles.map((article, index) => (
+            {sides.map((p, index) => (
               <ArticleCard
                 key={index}
                 variant="small"
-                title={article.title}
-                excerpt={article.excerpt}
-                image={article.image}
-                category={article.category}
-                categorySlug={article.categorySlug}
-                date={article.date}
-                href={article.href}
+                title={p.title}
+                excerpt={p.excerpt}
+                image={p.image || heroQuranImage}
+                category={p.category}
+                categorySlug={'quran'}
+                date={p.date}
+                href={`/articles/${p.slug}`}
               />
             ))}
           </div>
 
           {/* Right Column: Large Hero Article */}
           <div className="col-span-2">
-            <ArticleCard
-              variant="hero"
-              title={heroArticle.title}
-              excerpt={heroArticle.excerpt}
-              image={heroArticle.image}
-              category={heroArticle.category}
-              categorySlug={heroArticle.categorySlug}
-              date={heroArticle.date}
-              href={heroArticle.href}
-            />
+            {featured ? (
+              <ArticleCard
+                variant="hero"
+                title={featured.title}
+                excerpt={featured.excerpt}
+                image={featured.image || heroHealthImage}
+                category={featured.category}
+                categorySlug={'health'}
+                date={featured.date}
+                href={`/articles/${featured.slug}`}
+              />
+            ) : null}
           </div>
         </div>
       </div>

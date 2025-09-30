@@ -1,8 +1,10 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import ArticleCard from '@/components/ArticleCard';
 import Sidebar from '@/components/Sidebar';
 import { useTranslation } from '@/contexts/TranslationContext';
+import { loadBlogPosts, BlogPost } from '@/lib/contentLoader';
 import heroHealthImage from '@/assets/hero-health-nutrition.jpg';
 import heroParentingImage from '@/assets/hero-parenting.jpg';
 import heroQuranImage from '@/assets/hero-quran.jpg';
@@ -51,36 +53,23 @@ const CategoryPage = () => {
     image: heroHealthImage
   };
 
-  // Mock articles for the category
-  const categoryArticles = [
-    {
-      title: `Essential ${info.title} Tips for Modern Families`,
-      excerpt: `Discover practical advice and expert insights for ${info.title.toLowerCase()} that fits into your busy lifestyle.`,
-      image: info.image,
-      category: info.title,
-      categorySlug: currentCategory as 'health' | 'parenting' | 'education' | 'quran' | 'baby-names',
-      date: "2025-01-15",
-      href: `/articles/essential-${currentCategory}-tips`
-    },
-    {
-      title: `Understanding ${info.title} in Today's World`,
-      excerpt: `Comprehensive guide to ${info.title.toLowerCase()} with evidence-based recommendations and cultural wisdom.`,
-      image: info.image,
-      category: info.title,
-      categorySlug: currentCategory as 'health' | 'parenting' | 'education' | 'quran' | 'baby-names',
-      date: "2025-01-14",
-      href: `/articles/understanding-${currentCategory}`
-    },
-    {
-      title: `${info.title} Guidelines for Beginners`,
-      excerpt: `Start your ${info.title.toLowerCase()} journey with these foundational principles and practical steps.`,
-      image: info.image,
-      category: info.title,
-      categorySlug: currentCategory as 'health' | 'parenting' | 'education' | 'quran' | 'baby-names',
-      date: "2025-01-13",
-      href: `/articles/${currentCategory}-guidelines-beginners`
-    },
-  ];
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const all = await loadBlogPosts();
+        const filtered = all.filter(p => p.category.toLowerCase().includes(info.title.toLowerCase().split(' ')[0].toLowerCase()));
+        setPosts(filtered);
+      } catch (e) {
+        setError('load-failed');
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [currentCategory, info.title]);
 
   return (
     <Layout>
@@ -102,16 +91,16 @@ const CategoryPage = () => {
           {/* Main Content */}
           <div className="flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categoryArticles.map((article, index) => (
+              {posts.map((p, index) => (
                 <ArticleCard
                   key={index}
-                  title={article.title}
-                  excerpt={article.excerpt}
-                  image={article.image}
-                  category={article.category}
-                  categorySlug={article.categorySlug}
-                  date={article.date}
-                  href={article.href}
+                  title={p.title}
+                  excerpt={p.excerpt}
+                  image={p.image || info.image}
+                  category={p.category}
+                  categorySlug={currentCategory as 'health' | 'parenting' | 'education' | 'quran' | 'baby-names'}
+                  date={p.date}
+                  href={`/articles/${p.slug}`}
                 />
               ))}
             </div>
