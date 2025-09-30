@@ -21,6 +21,34 @@ const copyAdminFiles = () => {
   };
 };
 
+// Copy hero images to dist/images so absolute /images/hero-*.jpg work in posts
+const copyHeroImages = () => {
+  return {
+    name: 'copy-hero-images',
+    writeBundle() {
+      const srcDir = path.resolve(__dirname, 'src/assets');
+      const outDir = path.resolve(__dirname, 'dist/images');
+      if (!existsSync(outDir)) {
+        mkdirSync(outDir, { recursive: true });
+      }
+      const heroFiles = [
+        'hero-baby-names.jpg',
+        'hero-education.jpg',
+        'hero-health-nutrition.jpg',
+        'hero-parenting.jpg',
+        'hero-quran.jpg',
+      ];
+      for (const file of heroFiles) {
+        const from = path.join(srcDir, file);
+        const to = path.join(outDir, file);
+        if (existsSync(from)) {
+          copyFileSync(from, to);
+        }
+      }
+    }
+  };
+};
+
 // Plugin to generate a JSON feed of blog posts at build time as a fallback
 const generatePostsJson = () => {
   const blogDir = path.resolve(__dirname, 'src/content/blog');
@@ -93,6 +121,7 @@ export default defineConfig(({ mode }) => ({
     react(), 
     mode === "development" && componentTagger(),
     copyAdminFiles(),
+    copyHeroImages(),
     generatePostsJson()
   ].filter(Boolean),
   resolve: {
