@@ -46,34 +46,49 @@ try {
 } catch (_) {}
 
 export const loadBlogPosts = async (): Promise<BlogPost[]> => {
-  const entries = Object.entries(blogModules);
-  const posts = await Promise.all(entries.map(async ([path, raw]) => {
-    const { content, data } = matter(raw);
-    const frontmatter = data as BlogPostFrontmatter;
-    const html = marked.parse(content) as string;
-    const slug = path
-      .split('/')
-      .pop()!
-      .replace(/\.md$/, '')
-      .replace(/^[0-9]{4}-[0-9]{2}-[0-9]{2}-/, '');
+  try {
+    const entries = Object.entries(blogModules);
+    const posts = await Promise.all(entries.map(async ([path, raw]) => {
+      const { content, data } = matter(raw);
+      const frontmatter = data as BlogPostFrontmatter;
+      const html = marked.parse(content) as string;
+      const slug = path
+        .split('/')
+        .pop()!
+        .replace(/\.md$/, '')
+        .replace(/^[0-9]{4}-[0-9]{2}-[0-9]{2}-/, '');
 
-    return {
-      title: frontmatter.title,
-      date: frontmatter.date,
-      image: frontmatter.image,
-      category: frontmatter.category,
-      excerpt: frontmatter.excerpt,
-      author: frontmatter.author ?? 'Miftah Som Academy',
-      readTime: frontmatter.readTime ?? '5 min read',
-      language: frontmatter.language ?? 'en',
-      slug,
-      html,
-    } satisfies BlogPost;
-  }));
+      return {
+        title: frontmatter.title,
+        date: frontmatter.date,
+        image: frontmatter.image,
+        category: frontmatter.category,
+        excerpt: frontmatter.excerpt,
+        author: frontmatter.author ?? 'Miftah Som Academy',
+        readTime: frontmatter.readTime ?? '5 min read',
+        language: frontmatter.language ?? 'en',
+        slug,
+        html,
+      } satisfies BlogPost;
+    }));
 
-  // Newest first
-  posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  return posts;
+    // Newest first
+    posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    if (posts.length > 0) return posts;
+  } catch (err) {
+    console.error('[contentLoader] module glob load failed, falling back to posts.json', err);
+  }
+
+  // Fallback: fetch prebuilt JSON from dist
+  try {
+    const res = await fetch('/posts.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const posts = (await res.json()) as BlogPost[];
+    return posts;
+  } catch (err) {
+    console.error('[contentLoader] failed to load posts.json fallback', err);
+    return [];
+  }
 };
 
 export const loadCategories = async (): Promise<Category[]> => {
