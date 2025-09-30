@@ -20,6 +20,8 @@ const ArticleGrid = () => {
         const all = await loadBlogPosts();
         setPosts(all);
       } catch (e) {
+        // Surface error in console to diagnose missing posts in production
+        console.error('[ArticleGrid] Failed to load blog posts', e);
         setError('load-failed');
       } finally {
         setLoading(false);
