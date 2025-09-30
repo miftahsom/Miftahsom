@@ -34,6 +34,11 @@ const ArticleGrid = () => {
       {/* Mobile: Al Jazeera Health Style - Horizontal Cards */}
       <div className="lg:hidden py-4">
         <div className="space-y-3">
+          {posts.length === 0 && !loading && (
+            <div className="text-center text-text-secondary py-6">
+              No articles available yet.
+            </div>
+          )}
           {posts.map((p, index) => (
             <ArticleCard
               key={index}
@@ -52,6 +57,11 @@ const ArticleGrid = () => {
       {/* Desktop: 3 Column Grid */}
       <div className="hidden lg:block py-8">
         <div className="grid grid-cols-3 gap-6">
+          {posts.length === 0 && !loading && (
+            <div className="col-span-3 text-center text-text-secondary py-12 border border-dashed border-card-border rounded-lg">
+              No articles available yet.
+            </div>
+          )}
           {posts.map((p, index) => (
             <ArticleCard
               key={index}

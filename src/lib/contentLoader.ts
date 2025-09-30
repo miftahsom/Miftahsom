@@ -35,13 +35,12 @@ import matter from 'gray-matter';
 import { marked } from 'marked';
 
 // Glob import markdown files as raw strings at build-time
-// Use Vite's `{ as: 'raw' }` to ensure the loader resolves to a string
-const blogModules = import.meta.glob('../content/blog/**/*.md', { as: 'raw' });
+// Use Vite's `{ as: 'raw', eager: true }` so content is bundled at build time
+const blogModules = import.meta.glob('../content/blog/**/*.md', { as: 'raw', eager: true }) as Record<string, string>;
 
 export const loadBlogPosts = async (): Promise<BlogPost[]> => {
   const entries = Object.entries(blogModules);
-  const posts = await Promise.all(entries.map(async ([path, loader]) => {
-    const raw = await (loader as () => Promise<string>)();
+  const posts = await Promise.all(entries.map(async ([path, raw]) => {
     const { content, data } = matter(raw);
     const frontmatter = data as BlogPostFrontmatter;
     const html = marked.parse(content) as string;
