@@ -1,15 +1,18 @@
 // Content loader for Netlify CMS
-export interface BlogPost {
+export interface BlogPostFrontmatter {
   title: string;
   date: string;
   image: string;
   category: string;
   excerpt: string;
-  author: string;
-  readTime: string;
-  language: string;
+  author?: string;
+  readTime?: string;
+  language?: string;
+}
+
+export interface BlogPost extends BlogPostFrontmatter {
   slug: string;
-  body: string;
+  html: string;
 }
 
 export interface Category {
@@ -28,25 +31,42 @@ export interface HomePage {
   heroImage: string;
 }
 
-// In a real implementation, you would fetch this from your CMS API
-// For now, we'll use the static content we created
+import matter from 'gray-matter';
+import { marked } from 'marked';
+
+// Glob import markdown files as raw strings at build-time
+const blogModules = import.meta.glob('/src/content/blog/**/*.md', { as: 'raw' });
+
 export const loadBlogPosts = async (): Promise<BlogPost[]> => {
-  // This would typically fetch from your CMS API
-  // For now, return the sample data
-  return [
-    {
-      title: "Essential Nutrition Guide: Building Healthy Eating Habits for the Whole Family",
-      date: "2025-01-15",
-      image: "/images/hero-health-nutrition.jpg",
-      category: "Health",
-      excerpt: "Discover comprehensive strategies for maintaining optimal health through balanced nutrition, including practical meal planning tips and evidence-based dietary recommendations that work for busy families.",
-      author: "Dr. Amina Hassan",
-      readTime: "8 min read",
-      language: "en",
-      slug: "essential-nutrition-guide",
-      body: "# Essential Nutrition Guide..."
-    }
-  ];
+  const entries = Object.entries(blogModules);
+  const posts = await Promise.all(entries.map(async ([path, loader]) => {
+    const raw = await (loader as () => Promise<string>)();
+    const { content, data } = matter(raw);
+    const frontmatter = data as BlogPostFrontmatter;
+    const html = marked.parse(content) as string;
+    const slug = path
+      .split('/')
+      .pop()!
+      .replace(/\.md$/, '')
+      .replace(/^[0-9]{4}-[0-9]{2}-[0-9]{2}-/, '');
+
+    return {
+      title: frontmatter.title,
+      date: frontmatter.date,
+      image: frontmatter.image,
+      category: frontmatter.category,
+      excerpt: frontmatter.excerpt,
+      author: frontmatter.author ?? 'Miftah Som Academy',
+      readTime: frontmatter.readTime ?? '5 min read',
+      language: frontmatter.language ?? 'en',
+      slug,
+      html,
+    } satisfies BlogPost;
+  }));
+
+  // Newest first
+  posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return posts;
 };
 
 export const loadCategories = async (): Promise<Category[]> => {

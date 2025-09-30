@@ -6,6 +6,7 @@ interface ArticleCardProps {
   excerpt: string;
   image: string;
   category: string;
+  categorySlug?: 'health' | 'parenting' | 'education' | 'quran' | 'baby-names';
   date: string;
   href: string;
   variant?: 'default' | 'small' | 'hero' | 'mobile-horizontal';
@@ -16,19 +17,28 @@ const ArticleCard = ({
   excerpt,
   image,
   category,
+  categorySlug,
   date,
   href,
   variant = 'default'
 }: ArticleCardProps) => {
-  const getCategoryColor = (cat: string) => {
-    const colors: Record<string, string> = {
-      'Health': 'text-category-health bg-category-health/10',
-      'Parenting': 'text-category-parenting bg-category-parenting/10',
-      'Education': 'text-category-education bg-category-education/10',
-      'Quran': 'text-category-quran bg-category-quran/10',
-      'Baby Names': 'text-category-baby-names bg-category-baby-names/10',
+  const getCategoryColor = () => {
+    const bySlug: Record<NonNullable<ArticleCardProps['categorySlug']>, string> = {
+      'health': 'text-category-health bg-category-health/10',
+      'parenting': 'text-category-parenting bg-category-parenting/10',
+      'education': 'text-category-education bg-category-education/10',
+      'quran': 'text-category-quran bg-category-quran/10',
+      'baby-names': 'text-category-baby-names bg-category-baby-names/10',
     };
-    return colors[cat] || 'text-text-secondary bg-text-secondary/10';
+    if (categorySlug) return bySlug[categorySlug];
+    // Fallback: attempt to infer from category label (translated)
+    const normalized = category.toLowerCase();
+    if (normalized.includes('baby')) return bySlug['baby-names'];
+    if (normalized.includes('quran')) return bySlug['quran'];
+    if (normalized.includes('parent')) return bySlug['parenting'];
+    if (normalized.includes('educat') || normalized.includes('waxbarasho')) return bySlug['education'];
+    if (normalized.includes('health') || normalized.includes('caafimaad')) return bySlug['health'];
+    return 'text-text-secondary bg-text-secondary/10';
   };
 
   const getImageClasses = () => {
@@ -61,10 +71,11 @@ const ArticleCard = ({
           {/* Image Container - Small square on left */}
           <div className="relative overflow-hidden w-20 h-20 rounded-md flex-shrink-0">
             <img 
-              src={image} 
-              alt={title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
+            src={image} 
+            alt={title}
+            loading={variant === 'hero' ? 'eager' : 'lazy'}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
           </div>
 
           {/* Content */}
@@ -100,7 +111,7 @@ const ArticleCard = ({
           />
           {/* Category Badge */}
           <div className="absolute top-3 left-3">
-            <span className={`inline-block px-2 py-1 rounded text-small font-medium ${getCategoryColor(category)}`}>
+            <span className={`inline-block px-2 py-1 rounded text-small font-medium ${getCategoryColor()}`}>
               {category}
             </span>
           </div>

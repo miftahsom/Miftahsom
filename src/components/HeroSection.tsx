@@ -13,6 +13,7 @@ const HeroSection = () => {
     excerpt: t('hero.main-excerpt'),
     image: heroHealthImage,
     category: t('category.health.title'),
+    categorySlug: 'health' as const,
     date: "2025-01-15",
     href: "/articles/essential-nutrition-guide"
   };
@@ -22,7 +23,8 @@ const HeroSection = () => {
       title: t('hero.side1-title'),
       excerpt: t('hero.side1-excerpt'),
       image: heroParentingImage,
-      category: t('category.parenting.title'), 
+      category: t('category.parenting.title'),
+      categorySlug: 'parenting' as const,
       date: "2025-01-14",
       href: "/articles/modern-parenting-balance"
     },
@@ -31,6 +33,7 @@ const HeroSection = () => {
       excerpt: t('hero.side2-excerpt'),
       image: heroQuranImage,
       category: t('category.quran.title'),
+      categorySlug: 'quran' as const,
       date: "2025-01-13", 
       href: "/articles/quranic-values-daily-life"
     }
@@ -53,6 +56,7 @@ const HeroSection = () => {
             excerpt={heroArticle.excerpt}
             image={heroArticle.image}
             category={heroArticle.category}
+            categorySlug={heroArticle.categorySlug}
             date={heroArticle.date}
             href={heroArticle.href}
           />
@@ -68,6 +72,7 @@ const HeroSection = () => {
               excerpt={article.excerpt}
               image={article.image}
               category={article.category}
+                categorySlug={article.categorySlug}
               date={article.date}
               href={article.href}
             />
@@ -88,6 +93,7 @@ const HeroSection = () => {
                 excerpt={article.excerpt}
                 image={article.image}
                 category={article.category}
+                categorySlug={article.categorySlug}
                 date={article.date}
                 href={article.href}
               />
@@ -102,6 +108,7 @@ const HeroSection = () => {
               excerpt={heroArticle.excerpt}
               image={heroArticle.image}
               category={heroArticle.category}
+              categorySlug={heroArticle.categorySlug}
               date={heroArticle.date}
               href={heroArticle.href}
             />

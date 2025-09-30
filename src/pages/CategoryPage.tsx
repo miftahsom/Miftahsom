@@ -58,6 +58,7 @@ const CategoryPage = () => {
       excerpt: `Discover practical advice and expert insights for ${info.title.toLowerCase()} that fits into your busy lifestyle.`,
       image: info.image,
       category: info.title,
+      categorySlug: currentCategory as 'health' | 'parenting' | 'education' | 'quran' | 'baby-names',
       date: "2025-01-15",
       href: `/articles/essential-${currentCategory}-tips`
     },
@@ -66,6 +67,7 @@ const CategoryPage = () => {
       excerpt: `Comprehensive guide to ${info.title.toLowerCase()} with evidence-based recommendations and cultural wisdom.`,
       image: info.image,
       category: info.title,
+      categorySlug: currentCategory as 'health' | 'parenting' | 'education' | 'quran' | 'baby-names',
       date: "2025-01-14",
       href: `/articles/understanding-${currentCategory}`
     },
@@ -74,6 +76,7 @@ const CategoryPage = () => {
       excerpt: `Start your ${info.title.toLowerCase()} journey with these foundational principles and practical steps.`,
       image: info.image,
       category: info.title,
+      categorySlug: currentCategory as 'health' | 'parenting' | 'education' | 'quran' | 'baby-names',
       date: "2025-01-13",
       href: `/articles/${currentCategory}-guidelines-beginners`
     },
@@ -106,6 +109,7 @@ const CategoryPage = () => {
                   excerpt={article.excerpt}
                   image={article.image}
                   category={article.category}
+                  categorySlug={article.categorySlug}
                   date={article.date}
                   href={article.href}
                 />

@@ -16,6 +16,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.somali-baby-names-excerpt'),
       image: heroBabyNamesImage,
       category: t('category.baby-names.title'),
+      categorySlug: 'baby-names' as const,
       date: "2025-01-12",
       href: "/articles/somali-baby-names-heritage"
     },
@@ -24,6 +25,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.work-life-balance-excerpt'),
       image: heroEducationImage,
       category: t('category.education.title'),
+      categorySlug: 'education' as const,
       date: "2025-01-11",
       href: "/articles/work-life-balance-countries-2025"
     },
@@ -32,6 +34,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.islamic-values-excerpt'),
       image: heroQuranImage,
       category: t('category.quran.title'),
+      categorySlug: 'quran' as const,
       date: "2025-01-10",
       href: "/articles/teaching-islamic-values-home"
     },
@@ -40,6 +43,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.healthy-breakfast-excerpt'),
       image: heroHealthImage,
       category: t('category.health.title'),
+      categorySlug: 'health' as const,
       date: "2025-01-09",
       href: "/articles/healthy-breakfast-children"
     },
@@ -48,6 +52,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.positive-discipline-excerpt'),
       image: heroParentingImage,
       category: t('category.parenting.title'),
+      categorySlug: 'parenting' as const,
       date: "2025-01-08",
       href: "/articles/positive-discipline-toddlers"
     },
@@ -56,6 +61,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.educational-activities-excerpt'),
       image: heroEducationImage,
       category: t('category.education.title'), 
+      categorySlug: 'education' as const,
       date: "2025-01-07",
       href: "/articles/educational-activities-preschoolers"
     },
@@ -64,6 +70,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.arabic-names-girls-excerpt'),
       image: heroBabyNamesImage,
       category: t('category.baby-names.title'),
+      categorySlug: 'baby-names' as const,
       date: "2025-01-06", 
       href: "/articles/meaningful-arabic-names-girls"
     },
@@ -72,6 +79,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.mental-health-parenting-excerpt'),
       image: heroParentingImage,
       category: t('category.parenting.title'),
+      categorySlug: 'parenting' as const,
       date: "2025-01-05",
       href: "/articles/mental-health-parenting-balance"
     },
@@ -80,6 +88,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.quran-memorization-excerpt'),
       image: heroQuranImage,
       category: t('category.quran.title'),
+      categorySlug: 'quran' as const,
       date: "2025-01-04",
       href: "/articles/quran-memorization-children"
     },
@@ -88,6 +97,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.immune-systems-excerpt'),
       image: heroHealthImage,
       category: t('category.health.title'),
+      categorySlug: 'health' as const,
       date: "2025-01-03",
       href: "/articles/building-immune-systems-naturally"
     },
@@ -96,6 +106,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.stem-education-excerpt'),
       image: heroEducationImage,
       category: t('category.education.title'),
+      categorySlug: 'education' as const,
       date: "2025-01-02",
       href: "/articles/stem-education-children-future"
     },
@@ -104,6 +115,7 @@ const ArticleGrid = () => {
       excerpt: t('articles.traditional-somali-names-excerpt'),
       image: heroBabyNamesImage,
       category: t('category.baby-names.title'),
+      categorySlug: 'baby-names' as const,
       date: "2025-01-01",
       href: "/articles/traditional-somali-names-modern"
     }
@@ -139,6 +151,7 @@ const ArticleGrid = () => {
               excerpt={article.excerpt}
               image={article.image}
               category={article.category}
+            categorySlug={article.categorySlug}
               date={article.date}
               href={article.href}
             />
