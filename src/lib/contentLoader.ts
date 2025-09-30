@@ -37,6 +37,11 @@ import { marked } from 'marked';
 // Glob import markdown files as raw strings at build-time
 // Use Vite's `{ as: 'raw', eager: true }` so content is bundled at build time
 const blogModules = import.meta.glob('../content/blog/**/*.md', { as: 'raw', eager: true }) as Record<string, string>;
+// Debug: log discovered markdown files at build/runtime
+try {
+  const discoveredKeys = Object.keys(blogModules);
+  console.log('[contentLoader] discovered markdown files:', discoveredKeys);
+} catch (_) {}
 
 export const loadBlogPosts = async (): Promise<BlogPost[]> => {
   const entries = Object.entries(blogModules);
