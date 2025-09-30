@@ -18,6 +18,7 @@ const ArticleGrid = () => {
     (async () => {
       try {
         const all = await loadBlogPosts();
+        console.log(`[ArticleGrid] Loaded posts: ${all.length}`);
         setPosts(all);
       } catch (e) {
         // Surface error in console to diagnose missing posts in production
