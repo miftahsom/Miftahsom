@@ -7,7 +7,7 @@ excerpt: Hadii’aad ku qayliso ama aad canaanatana waxay horsseeday, inay
   ilmahaas ubilaabato maalin cabsi iyo nacayb huwan.
 author: Dr. kasee
 readTime: 5 min read
-language: so
+language: en
 ---
 <!--\[if gte mso 9]><xml>
  <o:OfficeDocumentSettings>
