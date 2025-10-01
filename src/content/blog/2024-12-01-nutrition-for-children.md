@@ -1,12 +1,13 @@
 ---
 title: "Nutrition for Growing Children: Building Healthy Eating Habits"
 date: 2024-12-01T09:30:00.000Z
-image: "/images/hero-health-nutrition.jpg"
-category: "Health"
-excerpt: "Essential nutrition guidelines for children of all ages, including meal planning tips, healthy snack ideas, and dealing with picky eaters."
-author: "Mr. Mifta"
-readTime: "8 min read"
-language: "en"
+image: /images/istockphoto-1340865107-612x612.jpg
+category: Health
+excerpt: Essential nutrition guidelines for children of all ages, including meal
+  planning tips, healthy snack ideas, and dealing with picky eaters.
+author: Mr. Mifta
+readTime: 8 min read
+language: en
 ---
 
 # Nutrition for Growing Children: Building Healthy Eating Habits
