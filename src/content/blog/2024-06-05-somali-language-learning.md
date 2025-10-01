@@ -1,12 +1,13 @@
 ---
 title: "Somali Language Learning: Preserving Cultural Heritage"
 date: 2024-06-05T13:15:00.000Z
-image: "/images/hero-education.jpg"
-category: "Education"
-excerpt: "Discover effective methods for teaching Somali language to children, preserving cultural heritage and strengthening family connections."
-author: "Mr. Mifta"
-readTime: "9 min read"
-language: "en"
+image: /images/istockphoto-1387246957-612x612.jpg
+category: Education
+excerpt: Discover effective methods for teaching Somali language to children,
+  preserving cultural heritage and strengthening family connections.
+author: Mr. Mifta
+readTime: 9 min read
+language: en
 ---
 
 # Somali Language Learning: Preserving Cultural Heritage

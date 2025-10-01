@@ -1,12 +1,13 @@
 ---
 title: "Quran Memorization: A Guide for Children and Families"
 date: 2024-07-05T09:00:00.000Z
-image: "/images/hero-quran.jpg"
-category: "Quran"
-excerpt: "Discover effective strategies for helping children memorize the Quran, creating a loving and supportive environment for this beautiful journey."
-author: "Mr. Mifta"
-readTime: "10 min read"
-language: "en"
+image: /images/quran-4651747.webp
+category: Quran
+excerpt: Discover effective strategies for helping children memorize the Quran,
+  creating a loving and supportive environment for this beautiful journey.
+author: Mr. Mifta
+readTime: 10 min read
+language: en
 ---
 
 # Quran Memorization: A Guide for Children and Families

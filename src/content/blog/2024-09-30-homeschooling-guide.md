@@ -1,12 +1,14 @@
 ---
 title: "Homeschooling Success: A Comprehensive Guide for Modern Families"
 date: 2024-09-30T16:20:00.000Z
-image: "/images/hero-education.jpg"
-category: "Education"
-excerpt: "Explore the world of homeschooling with practical strategies, curriculum options, and tips for creating an effective learning environment at home."
-author: "Mr. Mifta"
-readTime: "12 min read"
-language: "en"
+image: /images/beba2a4beb27124575b314fdae8262c1.jpg
+category: Education
+excerpt: Explore the world of homeschooling with practical strategies,
+  curriculum options, and tips for creating an effective learning environment at
+  home.
+author: Mr. Mifta
+readTime: 12 min read
+language: en
 ---
 
 # Homeschooling Success: A Comprehensive Guide for Modern Families
