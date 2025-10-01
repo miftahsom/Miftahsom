@@ -1,12 +1,14 @@
 ---
 title: "Beautiful Somali Baby Names: Cultural Heritage and Modern Appeal"
 date: 2024-08-25T12:00:00.000Z
-image: "/images/hero-baby-names.jpg"
-category: "Baby Names"
-excerpt: "Explore the rich tradition of Somali baby names, their beautiful meanings, and how to choose the perfect name that honors your cultural heritage."
-author: "Mr. Mifta"
-readTime: "9 min read"
-language: "en"
+image: /images/1ecefb353acbbed20510f8be7236e8e3.jpg
+category: Baby Names
+excerpt: Explore the rich tradition of Somali baby names, their beautiful
+  meanings, and how to choose the perfect name that honors your cultural
+  heritage.
+author: Mr. Mifta
+readTime: 9 min read
+language: en
 ---
 
 # Beautiful Somali Baby Names: Cultural Heritage and Modern Appeal
