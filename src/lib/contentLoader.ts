@@ -31,43 +31,90 @@ export interface HomePage {
 // In a real implementation, you would fetch this from your CMS API
 // For now, we'll use the static content we created
 export const loadBlogPosts = async (): Promise<BlogPost[]> => {
-  const files = import.meta.glob("../content/blog/**/*.md", { query: "?raw", import: "default" });
-  const entries = Object.entries(files);
-  console.log("Found blog files:", entries.length, entries.map(([path]) => path));
-  if (entries.length === 0) return [];
+  try {
+    console.log("Starting to load blog posts...");
+    
+    // Try different glob patterns to find the files
+    const files = import.meta.glob("../content/blog/**/*.md", { query: "?raw", import: "default" });
+    const entries = Object.entries(files);
+    console.log("Found blog files:", entries.length, entries.map(([path]) => path));
+    
+    if (entries.length === 0) {
+      console.log("No blog files found, trying alternative pattern...");
+      // Try alternative pattern
+      const altFiles = import.meta.glob("./content/blog/**/*.md", { query: "?raw", import: "default" });
+      const altEntries = Object.entries(altFiles);
+      console.log("Alternative pattern found:", altEntries.length, altEntries.map(([path]) => path));
+      
+      if (altEntries.length === 0) {
+        console.log("No files found with any pattern");
+        return [];
+      }
+      
+      // Use alternative entries
+      entries.push(...altEntries);
+    }
 
-  const { default: matter } = await import("gray-matter");
-  const { marked } = await import("marked");
+    const { default: matter } = await import("gray-matter");
+    const { marked } = await import("marked");
 
-  const posts: BlogPost[] = await Promise.all(
-    entries.map(async ([path, loader]) => {
-      const raw = await (loader as () => Promise<string>)();
-      const parsed = matter(raw);
-      const data = parsed.data as Partial<BlogPost> & { date?: string };
-      const body = marked.parse(parsed.content.trim());
+    console.log("Processing", entries.length, "blog files...");
 
-      const fileName = path.split("/").pop() || "";
-      const withoutExt = fileName.replace(/\.md$/i, "");
-      // If filename starts with YYYY-MM-DD-, strip the date for slug
-      const slug = withoutExt.replace(/^\d{4}-\d{2}-\d{2}-/, "");
+    const posts: BlogPost[] = await Promise.all(
+      entries.map(async ([path, loader], index) => {
+        try {
+          console.log(`Processing file ${index + 1}/${entries.length}: ${path}`);
+          const raw = await (loader as () => Promise<string>)();
+          const parsed = matter(raw);
+          const data = parsed.data as Partial<BlogPost> & { date?: string };
+          const body = marked.parse(parsed.content.trim());
 
-      return {
-        title: data.title ?? slug,
-        date: data.date ?? new Date().toISOString().slice(0, 10),
-        image: data.image ?? "/images/placeholder.svg",
-        category: (data.category as string | undefined) ?? "General",
-        excerpt: data.excerpt ?? "",
-        author: data.author ?? "",
-        readTime: data.readTime ?? "",
-        language: (data as any).language ?? "en",
-        slug,
-        body
-      } as BlogPost;
-    })
-  );
+          const fileName = path.split("/").pop() || "";
+          const withoutExt = fileName.replace(/\.md$/i, "");
+          // If filename starts with YYYY-MM-DD-, strip the date for slug
+          const slug = withoutExt.replace(/^\d{4}-\d{2}-\d{2}-/, "");
 
-  posts.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
-  return posts;
+          const post = {
+            title: data.title ?? slug,
+            date: data.date ?? new Date().toISOString().slice(0, 10),
+            image: data.image ?? "/images/placeholder.svg",
+            category: (data.category as string | undefined) ?? "General",
+            excerpt: data.excerpt ?? "",
+            author: data.author ?? "",
+            readTime: data.readTime ?? "",
+            language: (data as any).language ?? "en",
+            slug,
+            body
+          } as BlogPost;
+          
+          console.log(`Successfully processed: ${post.title}`);
+          return post;
+        } catch (fileError) {
+          console.error(`Error processing file ${path}:`, fileError);
+          // Return a fallback post instead of failing completely
+          return {
+            title: `Error loading post ${index + 1}`,
+            date: new Date().toISOString().slice(0, 10),
+            image: "/images/placeholder.svg",
+            category: "General",
+            excerpt: "There was an error loading this post.",
+            author: "System",
+            readTime: "1 min read",
+            language: "en",
+            slug: `error-${index}`,
+            body: "<p>Error loading content</p>"
+          } as BlogPost;
+        }
+      })
+    );
+
+    console.log("Successfully processed", posts.length, "posts");
+    posts.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+    return posts;
+  } catch (error) {
+    console.error("Error in loadBlogPosts:", error);
+    throw error;
+  }
 };
 
 export const loadCategories = async (): Promise<Category[]> => {
