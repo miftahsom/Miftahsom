@@ -31,8 +31,18 @@ export interface HomePage {
 // In a real implementation, you would fetch this from your CMS API
 // For now, we'll use the static content we created
 export const loadBlogPosts = async (): Promise<BlogPost[]> => {
+  console.log("=== Starting loadBlogPosts ===");
+  console.log("Environment:", import.meta.env.MODE);
+  console.log("Base URL:", import.meta.env.BASE_URL);
+  
+  // In production, prefer posts.json for reliability
+  if (import.meta.env.PROD) {
+    console.log("Production environment detected, using posts.json directly");
+    return await loadPostsFromJson();
+  }
+  
   try {
-    console.log("Starting to load blog posts...");
+    console.log("Development environment, trying dynamic imports...");
     
     // Try different glob patterns to find the files
     const files = import.meta.glob("../content/blog/**/*.md", { query: "?raw", import: "default" });
@@ -122,12 +132,20 @@ export const loadBlogPosts = async (): Promise<BlogPost[]> => {
 const loadPostsFromJson = async (): Promise<BlogPost[]> => {
   try {
     console.log("Loading posts from posts.json...");
+    console.log("Current URL:", window.location.href);
+    console.log("Fetching from:", "/posts.json");
+    
     const response = await fetch("/posts.json");
+    console.log("Response status:", response.status);
+    console.log("Response ok:", response.ok);
+    
     if (!response.ok) {
-      throw new Error(`Failed to fetch posts.json: ${response.status}`);
+      throw new Error(`Failed to fetch posts.json: ${response.status} ${response.statusText}`);
     }
+    
     const postsData = await response.json();
     console.log("Successfully loaded", postsData.length, "posts from posts.json");
+    console.log("First post:", postsData[0]);
     
     // Convert the JSON data to BlogPost format
     const posts: BlogPost[] = postsData.map((post: any) => ({
@@ -143,9 +161,15 @@ const loadPostsFromJson = async (): Promise<BlogPost[]> => {
       body: post.html // The JSON contains 'html' instead of 'body'
     }));
     
+    console.log("Converted posts:", posts.length);
     return posts;
   } catch (error) {
     console.error("Error loading posts from posts.json:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     // Return empty array as final fallback
     return [];
   }
