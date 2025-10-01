@@ -1,7 +1,7 @@
 ---
 title: "Somali Language Learning: Preserving Cultural Heritage"
 date: 2024-06-05T13:15:00.000Z
-image: /images/desktop-wallpaper-pin-on-arabic-boy-names-islamic-baby.jpg
+image: /images/istockphoto-1387246957-612x612.jpg
 category: Education
 excerpt: Discover effective methods for teaching Somali language to children,
   preserving cultural heritage and strengthening family connections.
