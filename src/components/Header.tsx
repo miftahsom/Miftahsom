@@ -1,12 +1,88 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Search, Globe, Menu, X, Youtube, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '@/contexts/TranslationContext';
+import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<BlogPost[]>([]);
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
   const { language, toggleLanguage, t } = useTranslation();
+
+  // Load all posts for search
+  useEffect(() => {
+    const loadPosts = async () => {
+      try {
+        const posts = await loadBlogPosts();
+        setAllPosts(posts);
+      } catch (error) {
+        console.error('Error loading posts for search:', error);
+      }
+    };
+    loadPosts();
+  }, []);
+
+  // Close search dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setSearchOpen(false);
+        setSearchQuery('');
+        setSearchResults([]);
+      }
+    };
+
+    if (searchOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [searchOpen]);
+
+  // Search functionality
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    
+    if (query.trim().length === 0) {
+      setSearchResults([]);
+      setIsSearching(false);
+      return;
+    }
+
+    setIsSearching(true);
+    
+    // Simple search implementation - search in title, excerpt, and category
+    const filtered = allPosts.filter(post => 
+      post.title.toLowerCase().includes(query.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(query.toLowerCase()) ||
+      post.category.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    setSearchResults(filtered.slice(0, 5)); // Limit to 5 results
+    setIsSearching(false);
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Navigate to search results page or handle search
+      console.log('Searching for:', searchQuery);
+      setSearchOpen(false);
+    }
+  };
+
+  const handleResultClick = () => {
+    setSearchOpen(false);
+    setSearchQuery('');
+    setSearchResults([]);
+  };
 
   const navigationItems = [
     { title: t('nav.health'), href: '/health', active: true },
@@ -55,8 +131,8 @@ const Header = () => {
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-2">
-            {/* Search - Mobile Optimized */}
-            <div className="relative">
+            {/* Search - Fully Functional */}
+            <div className="relative" ref={searchRef}>
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
                 className="p-2 text-text-secondary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
@@ -64,17 +140,89 @@ const Header = () => {
                 <Search className="w-5 h-5" />
               </button>
               {searchOpen && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-background border border-border rounded-xl shadow-xl p-4 z-50">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder={t('common.search')}
-                      className="w-full px-4 py-3 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      autoFocus
-                    />
-                    <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-secondary hover:text-blue-600">
-                      <Search className="w-4 h-4" />
-                    </button>
+                <div className="absolute right-0 top-full mt-2 w-80 bg-background border border-border rounded-xl shadow-xl z-50">
+                  {/* Search Input */}
+                  <form onSubmit={handleSearchSubmit} className="p-4 border-b border-border">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder={t('common.search') || 'Search articles...'}
+                        value={searchQuery}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        className="w-full px-4 py-3 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        autoFocus
+                      />
+                      <button 
+                        type="submit"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-text-secondary hover:text-blue-600"
+                      >
+                        <Search className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </form>
+
+                  {/* Search Results */}
+                  <div className="max-h-96 overflow-y-auto">
+                    {isSearching && (
+                      <div className="p-4 text-center text-text-secondary text-sm">
+                        Searching...
+                      </div>
+                    )}
+                    
+                    {!isSearching && searchQuery && searchResults.length === 0 && (
+                      <div className="p-4 text-center text-text-secondary text-sm">
+                        No articles found for "{searchQuery}"
+                      </div>
+                    )}
+                    
+                    {!isSearching && searchResults.length > 0 && (
+                      <div className="p-2">
+                        <div className="text-xs text-text-meta px-2 py-1 mb-2">
+                          {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found
+                        </div>
+                        {searchResults.map((post) => (
+                          <Link
+                            key={post.slug}
+                            to={`/articles/${post.slug}`}
+                            onClick={handleResultClick}
+                            className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                          >
+                            <div className="flex gap-3">
+                              <img 
+                                src={post.image} 
+                                alt={post.title}
+                                className="w-12 h-12 object-cover rounded flex-shrink-0"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <h4 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-1">
+                                  {post.title}
+                                </h4>
+                                <p className="text-xs text-gray-600 line-clamp-1 mb-1">
+                                  {post.excerpt}
+                                </p>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-red-600 font-medium">
+                                    {post.category}
+                                  </span>
+                                  <span className="text-xs text-gray-500">
+                                    {new Date(post.date).toLocaleDateString('en-US', {
+                                      month: 'short',
+                                      day: 'numeric'
+                                    })}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {!searchQuery && (
+                      <div className="p-4 text-center text-text-secondary text-sm">
+                        Start typing to search articles...
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
