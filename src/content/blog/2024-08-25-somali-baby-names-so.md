@@ -1,12 +1,13 @@
 ---
 title: "Magacyada Soomaaliga: Dhaqanka iyo Macnaha Quruxda"
 date: 2024-08-25T10:00:00.000Z
-image: "/images/hero-baby-names.jpg"
-category: "Magacyada Carruurta"
-excerpt: "Baadi magacyada dhaqanka ah ee carruurta, muhiimadda dhaqameedka, iyo macnaha quruxda ee doorashooyinka caanka ah ee qoysaska casriga ah."
-author: "Dr. Aisha Mohamed"
-readTime: "6 daqiiqo oo akhris"
-language: "so"
+image: /images/deed5bb3acbc0acd31fcc4f19d2c9ed9-1.jpg
+category: Magacyada Carruurta
+excerpt: Baadi magacyada dhaqanka ah ee carruurta, muhiimadda dhaqameedka, iyo
+  macnaha quruxda ee doorashooyinka caanka ah ee qoysaska casriga ah.
+author: Dr. Aisha Mohamed
+readTime: 6 daqiiqo oo akhris
+language: so
 ---
 
 # Magacyada Soomaaliga: Dhaqanka iyo Macnaha Quruxda
