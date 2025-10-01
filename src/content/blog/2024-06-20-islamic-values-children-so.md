@@ -1,12 +1,13 @@
 ---
-title: "Barista Carruurta Qiyamka Islaamka Guri"
+title: Barista Carruurta Qiyamka Islaamka Guri
 date: 2024-06-20T10:00:00.000Z
-image: "/images/hero-quran.jpg"
-category: "Barbaarinta Carruurta"
-excerpt: "Hababka dhaqanka ah oo loogu talagalay waalidiinta inay ku daraan casharada Islaamka iyo qiyamka dhaqanka nolosha qoyska maalinle."
-author: "Sheikh Abdullahi"
-readTime: "7 daqiiqo oo akhris"
-language: "so"
+image: /images/adorable-baby-boy-wearing-beige-260nw-2126935568.webp
+category: Barbaarinta Carruurta
+excerpt: Hababka dhaqanka ah oo loogu talagalay waalidiinta inay ku daraan
+  casharada Islaamka iyo qiyamka dhaqanka nolosha qoyska maalinle.
+author: Sheikh Abdullahi
+readTime: 7 daqiiqo oo akhris
+language: so
 ---
 
 # Barista Carruurta Qiyamka Islaamka Guri
