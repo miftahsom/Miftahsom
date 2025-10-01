@@ -1,12 +1,13 @@
 ---
 title: "Mental Health Awareness: Breaking the Stigma in Our Communities"
 date: 2024-11-20T14:00:00.000Z
-image: "/images/hero-health-nutrition.jpg"
-category: "Health"
-excerpt: "Understanding mental health, recognizing signs of distress, and creating supportive environments for ourselves and our loved ones."
-author: "Mr. Mifta"
-readTime: "7 min read"
-language: "en"
+image: /images/photo-1588994538331-5cc9ba0284c3.jpg
+category: Health
+excerpt: Understanding mental health, recognizing signs of distress, and
+  creating supportive environments for ourselves and our loved ones.
+author: Mr. Mifta
+readTime: 7 min read
+language: en
 ---
 
 # Mental Health Awareness: Breaking the Stigma in Our Communities
