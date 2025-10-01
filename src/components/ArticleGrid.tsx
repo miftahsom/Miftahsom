@@ -2,8 +2,10 @@ import ArticleCard from './ArticleCard';
 import { useEffect, useState } from 'react';
 import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 import { Link } from 'react-router-dom';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 const ArticleGrid = () => {
+  const { t } = useTranslation();
   const [articles, setArticles] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +40,7 @@ const ArticleGrid = () => {
     return (
       <section className="container mx-auto px-4 lg:px-6 py-8">
         <div className="text-center">
-          <p className="text-text-secondary">Loading articles...</p>
+          <p className="text-text-secondary">{t('articles.loading')}</p>
         </div>
       </section>
     );
@@ -58,7 +60,7 @@ const ArticleGrid = () => {
     return (
       <section className="container mx-auto px-4 lg:px-6 py-8">
         <div className="text-center">
-          <p className="text-text-secondary">No articles found.</p>
+          <p className="text-text-secondary">{t('articles.not-found')}</p>
         </div>
       </section>
     );
@@ -70,9 +72,9 @@ const ArticleGrid = () => {
       <div className="lg:hidden py-6">
         {/* Section Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-gray-900">More Articles</h2>
+          <h2 className="text-lg font-bold text-gray-900">{t('articles.more')}</h2>
           <Link to="/health" className="text-red-600 text-sm font-medium hover:underline">
-            View All
+            {t('articles.view-all')}
           </Link>
         </div>
         

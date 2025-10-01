@@ -68,9 +68,9 @@ const HeroSection = () => {
         {/* Latest Articles Section */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-gray-900">Latest Articles</h2>
+            <h2 className="text-lg font-bold text-gray-900">{t('articles.latest')}</h2>
             <Link to="/health" className="text-red-600 text-sm font-medium hover:underline">
-              View All
+              {t('articles.view-all')}
             </Link>
           </div>
           

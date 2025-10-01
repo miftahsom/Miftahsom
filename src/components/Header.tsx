@@ -165,20 +165,20 @@ const Header = () => {
                   <div className="max-h-96 overflow-y-auto">
                     {isSearching && (
                       <div className="p-4 text-center text-text-secondary text-sm">
-                        Searching...
+                        {t('articles.searching')}
                       </div>
                     )}
                     
                     {!isSearching && searchQuery && searchResults.length === 0 && (
                       <div className="p-4 text-center text-text-secondary text-sm">
-                        No articles found for "{searchQuery}"
+                        {t('articles.search-no-results')} "{searchQuery}"
                       </div>
                     )}
                     
                     {!isSearching && searchResults.length > 0 && (
                       <div className="p-2">
                         <div className="text-xs text-text-meta px-2 py-1 mb-2">
-                          {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found
+                          {searchResults.length} {searchResults.length === 1 ? t('articles.results-found') : t('articles.results-found-plural')}
                         </div>
                         {searchResults.map((post) => (
                           <Link
@@ -220,7 +220,7 @@ const Header = () => {
                     
                     {!searchQuery && (
                       <div className="p-4 text-center text-text-secondary text-sm">
-                        Start typing to search articles...
+                        {t('articles.start-typing')}
                       </div>
                     )}
                   </div>

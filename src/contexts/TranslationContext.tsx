@@ -88,6 +88,25 @@ const translations = {
     'footer.copyright': '© 2025 Miftah Som Academy. All rights reserved.',
     'footer.cookie-policy': 'Cookie Policy',
     
+    // Social Media
+    'social.facebook': 'Facebook',
+    'social.twitter': 'Twitter', 
+    'social.instagram': 'Instagram',
+    'social.youtube': 'YouTube',
+    'social.tiktok': 'TikTok',
+    
+    // Article Grid & Hero Section
+    'articles.latest': 'Latest Articles',
+    'articles.more': 'More Articles',
+    'articles.view-all': 'View All',
+    'articles.loading': 'Loading articles...',
+    'articles.not-found': 'No articles found.',
+    'articles.search-no-results': 'No articles found for',
+    'articles.searching': 'Searching...',
+    'articles.results-found': 'result found',
+    'articles.results-found-plural': 'results found',
+    'articles.start-typing': 'Start typing to search articles...',
+    
     // Categories
     'category.health.title': 'Health',
     'category.health.description': 'Comprehensive health information, nutrition guidance, and wellness tips for the whole family.',
@@ -176,6 +195,25 @@ const translations = {
     'footer.description': 'Siinaya awood qoysaska macluumaad ku saabsan caafimaadka, barbaarinta, waxbarashada, iyo qiyamka Islaamka iyadoo la adeegsanayo waxyaabaha ku salaysan xogta iyo xigmadda dhaqanka.',
     'footer.copyright': '© 2025 Miftah Som Academy. Dhammaan xuquuqda way dhowran yihiin.',
     'footer.cookie-policy': 'Siyaasadda Cookies',
+    
+    // Social Media
+    'social.facebook': 'Facebook',
+    'social.twitter': 'Twitter',
+    'social.instagram': 'Instagram', 
+    'social.youtube': 'YouTube',
+    'social.tiktok': 'TikTok',
+    
+    // Article Grid & Hero Section
+    'articles.latest': 'Maqaallo Cusub',
+    'articles.more': 'Maqaallo Dheeraad ah',
+    'articles.view-all': 'Dhammaan',
+    'articles.loading': 'Maqaallo la soo gelinayo...',
+    'articles.not-found': 'Maqaal lama helin.',
+    'articles.search-no-results': 'Maqaal lama helin',
+    'articles.searching': 'Raadinta...',
+    'articles.results-found': 'natiijo la helay',
+    'articles.results-found-plural': 'natiijooyin la helay',
+    'articles.start-typing': 'Bilow qorista si aad u raadiso maqaallo...',
     
     // Categories
     'category.health.title': 'Caafimaad',
