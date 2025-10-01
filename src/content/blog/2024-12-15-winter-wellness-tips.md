@@ -1,12 +1,14 @@
 ---
 title: "Winter Wellness: Staying Healthy During the Cold Season"
 date: 2024-12-15T10:00:00.000Z
-image: "/images/hero-health-nutrition.jpg"
-category: "Health"
-excerpt: "Discover essential winter wellness strategies to maintain your family's health during the cold months, including immune-boosting foods and indoor activities."
-author: "Mr. Mifta"
-readTime: "6 min read"
-language: "en"
+image: /images/muslim-family-kids-and-mother-footage-101925428_iconl.webp
+category: Health
+excerpt: Discover essential winter wellness strategies to maintain your family's
+  health during the cold months, including immune-boosting foods and indoor
+  activities.
+author: Mr. Mifta
+readTime: 6 min read
+language: en
 ---
 
 # Winter Wellness: Staying Healthy During the Cold Season
