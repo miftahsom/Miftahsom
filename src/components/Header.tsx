@@ -21,18 +21,15 @@ const Header = () => {
       <div className="container mx-auto px-4">
         {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
-          {/* Logo - Mobile Optimized */}
-          <Link to="/" className="flex items-center space-x-3 flex-shrink-0">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-sm">
-              <span className="text-white font-bold text-lg">M</span>
-            </div>
+          {/* Logo - Text Based */}
+          <Link to="/" className="flex items-center flex-shrink-0">
             <div className="hidden sm:block">
-              <h1 className="text-lg font-bold text-foreground leading-tight">Miftah Som Academy</h1>
+              <h1 className="text-xl font-bold text-foreground leading-tight">Miftah Som Academy</h1>
               <p className="text-xs text-text-secondary">Health & Education</p>
             </div>
             {/* Mobile Logo Text */}
             <div className="sm:hidden">
-              <h1 className="text-base font-bold text-foreground">MSA</h1>
+              <h1 className="text-lg font-bold text-foreground">Miftah Som Academy</h1>
             </div>
           </Link>
 
