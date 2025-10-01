@@ -131,6 +131,19 @@ const Header = () => {
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-2">
+            {/* Language Toggle - Mobile (Always Visible) */}
+            <div className="sm:hidden">
+              <button 
+                onClick={toggleLanguage}
+                className="flex items-center space-x-1 px-2 py-1 text-text-secondary hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 border border-border rounded text-xs"
+              >
+                <Globe className="w-3 h-3" />
+                <span className={`font-medium ${language === 'en' ? 'text-blue-600' : ''}`}>EN</span>
+                <span className="text-text-meta">|</span>
+                <span className={`font-medium ${language === 'so' ? 'text-blue-600' : ''}`}>SO</span>
+              </button>
+            </div>
+
             {/* Search - Fully Functional */}
             <div className="relative" ref={searchRef}>
               <button
@@ -274,20 +287,6 @@ const Header = () => {
                 </Link>
               ))}
             </nav>
-            
-            {/* Mobile Language Toggle */}
-            <div className="px-4 py-3 border-t border-border-light">
-              <button 
-                onClick={toggleLanguage}
-                className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-text-secondary hover:text-blue-600 hover:bg-gray-50 transition-colors rounded-lg"
-              >
-                <div className="flex items-center space-x-3">
-                  <Globe className="w-4 h-4" />
-                  <span>{language === 'en' ? t('common.switch-to-somali') : t('common.switch-to-english')}</span>
-                </div>
-                <ChevronDown className="w-4 h-4" />
-              </button>
-            </div>
             
             {/* Mobile Social Media */}
             <div className="px-4 py-3 border-t border-border-light">
