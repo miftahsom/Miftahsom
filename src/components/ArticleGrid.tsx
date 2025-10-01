@@ -4,17 +4,64 @@ import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 
 const ArticleGrid = () => {
   const [articles, setArticles] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const data = await loadBlogPosts();
-      if (mounted) setArticles(data);
+      try {
+        console.log("Loading blog posts...");
+        setLoading(true);
+        setError(null);
+        const data = await loadBlogPosts();
+        console.log("Loaded articles:", data.length, data);
+        if (mounted) {
+          setArticles(data);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error("Error loading blog posts:", err);
+        if (mounted) {
+          setError("Failed to load blog posts");
+          setLoading(false);
+        }
+      }
     })();
     return () => {
       mounted = false;
     };
   }, []);
+
+  if (loading) {
+    return (
+      <section className="container mx-auto px-4 lg:px-6 py-8">
+        <div className="text-center">
+          <p className="text-text-secondary">Loading articles...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="container mx-auto px-4 lg:px-6 py-8">
+        <div className="text-center">
+          <p className="text-red-500">Error: {error}</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (articles.length === 0) {
+    return (
+      <section className="container mx-auto px-4 lg:px-6 py-8">
+        <div className="text-center">
+          <p className="text-text-secondary">No articles found.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="container mx-auto px-4 lg:px-6">

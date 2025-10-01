@@ -33,6 +33,7 @@ export interface HomePage {
 export const loadBlogPosts = async (): Promise<BlogPost[]> => {
   const files = import.meta.glob("../content/blog/**/*.md", { query: "?raw", import: "default" });
   const entries = Object.entries(files);
+  console.log("Found blog files:", entries.length, entries.map(([path]) => path));
   if (entries.length === 0) return [];
 
   const { default: matter } = await import("gray-matter");
