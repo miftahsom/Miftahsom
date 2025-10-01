@@ -12,19 +12,19 @@ import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 
 const ArticlePage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
 
   const [posts, setPosts] = useState<BlogPost[]>([]);
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const data = await loadBlogPosts();
+      const data = await loadBlogPosts(language);
       if (mounted) setPosts(data);
     })();
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [language]);
 
   const article = useMemo(() => posts.find(p => p.slug === slug), [posts, slug]);
   if (!article) {

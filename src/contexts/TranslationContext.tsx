@@ -107,6 +107,14 @@ const translations = {
     'articles.results-found-plural': 'results found',
     'articles.start-typing': 'Start typing to search articles...',
     
+    // Article Page
+    'article.not-found': 'Article not found',
+    'article.not-found-desc': 'The article you are looking for may have been moved or unpublished.',
+    'article.author': 'Author',
+    'article.share': 'Share',
+    'article.author-bio': 'Expert contributor with years of experience in health, parenting, and education.',
+    'article.related-articles': 'Related Articles',
+    
     // Categories
     'category.health.title': 'Health',
     'category.health.description': 'Comprehensive health information, nutrition guidance, and wellness tips for the whole family.',
@@ -214,6 +222,14 @@ const translations = {
     'articles.results-found': 'natiijo la helay',
     'articles.results-found-plural': 'natiijooyin la helay',
     'articles.start-typing': 'Bilow qorista si aad u raadiso maqaallo...',
+    
+    // Article Page
+    'article.not-found': 'Maqaal lama helin',
+    'article.not-found-desc': 'Maqaalka aad raadineysid waa laga saari karaa ama lama daabici karo.',
+    'article.author': 'Qoraaga',
+    'article.share': 'Wadaag',
+    'article.author-bio': 'Kuwa ka qayb qaata takhasuusi ah oo leh khibrad dheeraad ah oo ku saabsan caafimaadka, barbaarinta, iyo waxbarashada.',
+    'article.related-articles': 'Maqaallo La Xidhiidha',
     
     // Categories
     'category.health.title': 'Caafimaad',

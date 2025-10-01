@@ -14,7 +14,7 @@ import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 const CategoryPage = () => {
   const { category } = useParams<{ category: string }>();
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   
   // Extract category from pathname if not in params
   const getCurrentCategory = () => {
@@ -57,29 +57,31 @@ const CategoryPage = () => {
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const data = await loadBlogPosts();
+      const data = await loadBlogPosts(language);
       if (mounted) setAllPosts(data);
     })();
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [language]);
 
   const categoryArticles = useMemo(() => {
-    // Map route to frontmatter category names
-    const routeToCategory: Record<string, string> = {
-      'health': 'Health',
-      'parenting': 'Parenting',
-      'education': 'Education',
-      'quran': 'Quran',
-      'baby-names': 'Baby Names'
+    // Map route to frontmatter category names for both languages
+    const routeToCategory: Record<string, { en: string; so: string }> = {
+      'health': { en: 'Health', so: 'Caafimaad' },
+      'parenting': { en: 'Parenting', so: 'Barbaarinta Carruurta' },
+      'education': { en: 'Education', so: 'Waxbarasho' },
+      'quran': { en: 'Quran', so: 'Quraanka' },
+      'baby-names': { en: 'Baby Names', so: 'Magacyada Carruurta' }
     };
-    const desired = routeToCategory[currentCategory] || info.title;
+    
+    const categoryMap = routeToCategory[currentCategory];
+    const desired = categoryMap ? categoryMap[language as 'en' | 'so'] : info.title;
     const normalize = (v: string) => v.trim().toLowerCase();
     const desiredNorm = normalize(desired);
     const filtered = allPosts.filter(p => normalize(p.category) === desiredNorm);
     return filtered.length > 0 ? filtered : allPosts; // fallback to avoid empty grids
-  }, [allPosts, currentCategory, info.title]);
+  }, [allPosts, currentCategory, info.title, language]);
 
   return (
     <Layout>
