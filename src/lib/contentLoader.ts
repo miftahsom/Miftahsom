@@ -30,7 +30,7 @@ export interface HomePage {
 
 // In a real implementation, you would fetch this from your CMS API
 // For now, we'll use the static content we created
-export const loadBlogPosts = async (): Promise<BlogPost[]> => {
+export const loadBlogPosts = async (language: string = 'en'): Promise<BlogPost[]> => {
   console.log("=== Starting loadBlogPosts ===");
   console.log("Environment:", import.meta.env.MODE);
   console.log("Base URL:", import.meta.env.BASE_URL);
@@ -38,7 +38,7 @@ export const loadBlogPosts = async (): Promise<BlogPost[]> => {
   // In production, prefer posts.json for reliability
   if (import.meta.env.PROD) {
     console.log("Production environment detected, using posts.json directly");
-    return await loadPostsFromJson();
+    return await loadPostsFromJson(language);
   }
   
   try {
@@ -58,7 +58,7 @@ export const loadBlogPosts = async (): Promise<BlogPost[]> => {
       
       if (altEntries.length === 0) {
         console.log("No files found with any pattern, trying posts.json fallback...");
-        return await loadPostsFromJson();
+        return await loadPostsFromJson(language);
       }
       
       // Use alternative entries
@@ -119,17 +119,22 @@ export const loadBlogPosts = async (): Promise<BlogPost[]> => {
     );
 
     console.log("Successfully processed", posts.length, "posts");
-    posts.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
-    return posts;
+    
+    // Filter posts by language
+    const filteredPosts = posts.filter(post => post.language === language);
+    console.log(`Filtered to ${filteredPosts.length} posts for language: ${language}`);
+    
+    filteredPosts.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+    return filteredPosts;
   } catch (error) {
     console.error("Error in loadBlogPosts:", error);
     console.log("Falling back to posts.json...");
-    return await loadPostsFromJson();
+    return await loadPostsFromJson(language);
   }
 };
 
 // Fallback function to load posts from the generated posts.json file
-const loadPostsFromJson = async (): Promise<BlogPost[]> => {
+const loadPostsFromJson = async (language: string = 'en'): Promise<BlogPost[]> => {
   try {
     console.log("Loading posts from posts.json...");
     console.log("Current URL:", window.location.href);
@@ -162,7 +167,12 @@ const loadPostsFromJson = async (): Promise<BlogPost[]> => {
     }));
     
     console.log("Converted posts:", posts.length);
-    return posts;
+    
+    // Filter posts by language
+    const filteredPosts = posts.filter(post => post.language === language);
+    console.log(`Filtered to ${filteredPosts.length} posts for language: ${language}`);
+    
+    return filteredPosts;
   } catch (error) {
     console.error("Error loading posts from posts.json:", error);
     console.error("Error details:", {

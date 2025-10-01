@@ -18,14 +18,14 @@ const Header = () => {
   useEffect(() => {
     const loadPosts = async () => {
       try {
-        const posts = await loadBlogPosts();
+        const posts = await loadBlogPosts(language);
         setAllPosts(posts);
       } catch (error) {
         console.error('Error loading posts for search:', error);
       }
     };
     loadPosts();
-  }, []);
+  }, [language]);
 
   // Close search dropdown when clicking outside
   useEffect(() => {

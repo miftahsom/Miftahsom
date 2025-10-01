@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from '@/contexts/TranslationContext';
 
 const ArticleGrid = () => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [articles, setArticles] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +17,7 @@ const ArticleGrid = () => {
         console.log("Loading blog posts...");
         setLoading(true);
         setError(null);
-        const data = await loadBlogPosts();
+        const data = await loadBlogPosts(language);
         console.log("Loaded articles:", data.length, data);
         if (mounted) {
           setArticles(data);
@@ -34,7 +34,7 @@ const ArticleGrid = () => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [language]);
 
   if (loading) {
     return (

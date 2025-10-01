@@ -5,20 +5,20 @@ import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   
   const [posts, setPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const data = await loadBlogPosts();
+      const data = await loadBlogPosts(language);
       if (mounted) setPosts(data);
     })();
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [language]);
 
   const hero = posts[0];
   const side = posts.slice(1, 3);
