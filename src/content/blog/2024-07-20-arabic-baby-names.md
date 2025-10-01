@@ -1,12 +1,13 @@
 ---
 title: "Arabic Baby Names: Timeless Beauty and Deep Meaning"
 date: 2024-07-20T11:45:00.000Z
-image: "/images/hero-baby-names.jpg"
-category: "Baby Names"
-excerpt: "Explore the rich tradition of Arabic baby names, their poetic meanings, and cultural significance for families seeking beautiful, meaningful names."
-author: "Mr. Mifta"
-readTime: "7 min read"
-language: "en"
+image: /images/360_f_957472690_jgdhdcazhzbpyja196vjusd7jv9j5h5h.jpg
+category: Baby Names
+excerpt: Explore the rich tradition of Arabic baby names, their poetic meanings,
+  and cultural significance for families seeking beautiful, meaningful names.
+author: Mr. Mifta
+readTime: 7 min read
+language: en
 ---
 
 # Arabic Baby Names: Timeless Beauty and Deep Meaning
