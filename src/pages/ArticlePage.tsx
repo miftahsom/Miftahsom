@@ -84,9 +84,9 @@ const ArticlePage = () => {
               {article.title}
             </h1>
 
-            {/* Article Subtitle */}
+            {/* Article Excerpt */}
             <p className="text-xl text-text-secondary mb-6 leading-relaxed">
-              {article.subtitle}
+              {article.excerpt}
             </p>
 
             {/* Article Meta */}

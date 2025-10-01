@@ -47,8 +47,8 @@ export const loadBlogPosts = async (): Promise<BlogPost[]> => {
       console.log("Alternative pattern found:", altEntries.length, altEntries.map(([path]) => path));
       
       if (altEntries.length === 0) {
-        console.log("No files found with any pattern");
-        return [];
+        console.log("No files found with any pattern, trying posts.json fallback...");
+        return await loadPostsFromJson();
       }
       
       // Use alternative entries
@@ -113,7 +113,41 @@ export const loadBlogPosts = async (): Promise<BlogPost[]> => {
     return posts;
   } catch (error) {
     console.error("Error in loadBlogPosts:", error);
-    throw error;
+    console.log("Falling back to posts.json...");
+    return await loadPostsFromJson();
+  }
+};
+
+// Fallback function to load posts from the generated posts.json file
+const loadPostsFromJson = async (): Promise<BlogPost[]> => {
+  try {
+    console.log("Loading posts from posts.json...");
+    const response = await fetch("/posts.json");
+    if (!response.ok) {
+      throw new Error(`Failed to fetch posts.json: ${response.status}`);
+    }
+    const postsData = await response.json();
+    console.log("Successfully loaded", postsData.length, "posts from posts.json");
+    
+    // Convert the JSON data to BlogPost format
+    const posts: BlogPost[] = postsData.map((post: any) => ({
+      title: post.title,
+      date: post.date,
+      image: post.image,
+      category: post.category,
+      excerpt: post.excerpt,
+      author: post.author,
+      readTime: post.readTime,
+      language: post.language,
+      slug: post.slug,
+      body: post.html // The JSON contains 'html' instead of 'body'
+    }));
+    
+    return posts;
+  } catch (error) {
+    console.error("Error loading posts from posts.json:", error);
+    // Return empty array as final fallback
+    return [];
   }
 };
 
