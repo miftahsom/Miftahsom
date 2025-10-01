@@ -30,11 +30,11 @@ const Sidebar = () => {
   ];
 
   const categories = [
-    { name: t('category.health.title'), count: 24, icon: Heart, color: "text-category-health" },
-    { name: t('category.parenting.title'), count: 18, icon: Heart, color: "text-category-parenting" },
-    { name: t('category.baby-names.title'), count: 32, icon: Bookmark, color: "text-category-baby-names" },
-    { name: t('category.education.title'), count: 15, icon: GraduationCap, color: "text-category-education" },
-    { name: t('category.quran.title'), count: 21, icon: BookOpen, color: "text-category-quran" }
+    { name: t('category.health.title'), slug: 'health', count: 24, icon: Heart, color: "text-category-health" },
+    { name: t('category.parenting.title'), slug: 'parenting', count: 18, icon: Heart, color: "text-category-parenting" },
+    { name: t('category.baby-names.title'), slug: 'baby-names', count: 32, icon: Bookmark, color: "text-category-baby-names" },
+    { name: t('category.education.title'), slug: 'education', count: 15, icon: GraduationCap, color: "text-category-education" },
+    { name: t('category.quran.title'), slug: 'quran', count: 21, icon: BookOpen, color: "text-category-quran" }
   ];
 
   return (
@@ -79,7 +79,7 @@ const Sidebar = () => {
             return (
               <Link
                 key={index}
-                to={`/categories/${category.name.toLowerCase().replace(' ', '-')}`}
+                to={`/categories/${category.slug}`}
                 className="flex items-center justify-between py-2 px-3 rounded hover:bg-card-hover transition-colors group"
               >
                 <div className="flex items-center">
