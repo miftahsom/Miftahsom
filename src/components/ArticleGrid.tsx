@@ -1,6 +1,7 @@
 import ArticleCard from './ArticleCard';
 import { useEffect, useState } from 'react';
 import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
+import { Link } from 'react-router-dom';
 
 const ArticleGrid = () => {
   const [articles, setArticles] = useState<BlogPost[]>([]);
@@ -65,20 +66,52 @@ const ArticleGrid = () => {
 
   return (
     <section className="container mx-auto px-4 lg:px-6">
-      {/* Mobile: Al Jazeera Health Style - Horizontal Cards */}
-      <div className="lg:hidden py-4">
-        <div className="space-y-3">
+      {/* Mobile: Al Jazeera Health Style - News List */}
+      <div className="lg:hidden py-6">
+        {/* Section Header */}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-bold text-gray-900">More Articles</h2>
+          <Link to="/health" className="text-red-600 text-sm font-medium hover:underline">
+            View All
+          </Link>
+        </div>
+        
+        {/* Articles List - Al Jazeera Style */}
+        <div className="space-y-4">
           {articles.map((article, index) => (
-            <ArticleCard
-              key={index}
-              variant="mobile-horizontal"
-              title={article.title}
-              excerpt={article.excerpt}
-              image={article.image}
-              category={article.category}
-              date={article.date}
-              href={`/articles/${article.slug}`}
-            />
+            <Link key={index} to={`/articles/${article.slug}`} className="block group">
+              <div className="flex gap-3 pb-4 border-b border-gray-100 last:border-b-0">
+                {/* Image */}
+                <div className="flex-shrink-0">
+                  <img 
+                    src={article.image} 
+                    alt={article.title}
+                    className="w-20 h-20 object-cover rounded"
+                  />
+                </div>
+                
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-semibold text-gray-900 mb-1 group-hover:text-red-600 transition-colors line-clamp-2 leading-tight">
+                    {article.title}
+                  </h3>
+                  <p className="text-xs text-gray-600 line-clamp-2 mb-2">
+                    {article.excerpt}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500">
+                      {new Date(article.date).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric'
+                      })}
+                    </span>
+                    <span className="text-xs text-red-600 font-medium">
+                      {article.category}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
       </div>

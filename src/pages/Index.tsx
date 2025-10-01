@@ -11,20 +11,32 @@ const Index = () => {
         <h1>Miftah Som Academy - Health, Parenting, Education &amp; Islamic Studies</h1>
       </div>
 
-      {/* Hero Section - Exact Al Jazeera Layout */}
-      <HeroSection />
+      {/* Mobile Layout - Al Jazeera Style */}
+      <div className="lg:hidden">
+        {/* Hero Section */}
+        <HeroSection />
+        
+        {/* Main Articles */}
+        <ArticleGrid />
+      </div>
 
-      {/* Main Content Grid */}
-      <div className="container mx-auto px-4 pb-12">
-        <div className="flex gap-8">
-          {/* Main Articles Grid */}
-          <div className="flex-1">
-            <ArticleGrid />
-          </div>
+      {/* Desktop Layout */}
+      <div className="hidden lg:block">
+        {/* Hero Section - Exact Al Jazeera Layout */}
+        <HeroSection />
 
-          {/* Sidebar - Hidden on mobile, shown on desktop */}
-          <div className="hidden xl:block">
-            <Sidebar />
+        {/* Main Content Grid */}
+        <div className="container mx-auto px-4 pb-12">
+          <div className="flex gap-8">
+            {/* Main Articles Grid */}
+            <div className="flex-1">
+              <ArticleGrid />
+            </div>
+
+            {/* Sidebar - Hidden on mobile, shown on desktop */}
+            <div className="hidden xl:block">
+              <Sidebar />
+            </div>
           </div>
         </div>
       </div>
