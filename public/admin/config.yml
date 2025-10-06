@@ -37,6 +37,36 @@ collections:
           - {label: "Hero Title", name: "heroTitle", widget: "string"}
           - {label: "Hero Excerpt", name: "heroExcerpt", widget: "text"}
           - {label: "Hero Image", name: "heroImage", widget: "image"}
+      - label: "About Page"
+        name: "about"
+        file: "src/content/pages/about.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Body", name: "body", widget: "markdown"}
+      - label: "Contact Page"
+        name: "contact"
+        file: "src/content/pages/contact.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Body", name: "body", widget: "markdown"}
+      - label: "Privacy Policy"
+        name: "privacy"
+        file: "src/content/pages/privacy.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string", default: "Privacy Policy"}
+          - {label: "Body", name: "body", widget: "markdown"}
+      - label: "Terms of Service"
+        name: "terms"
+        file: "src/content/pages/terms.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string", default: "Terms of Service"}
+          - {label: "Body", name: "body", widget: "markdown"}
+      - label: "Cookie Policy"
+        name: "cookies"
+        file: "src/content/pages/cookies.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string", default: "Cookie Policy"}
+          - {label: "Body", name: "body", widget: "markdown"}
 
   - name: "categories"
     label: "Categories"
