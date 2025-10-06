@@ -2,7 +2,7 @@
 title: "Essential Nutrition Guide: Building Healthy Eating Habits for the Whole
   Family"
 date: 2025-09-30T17:40:50.140Z
-image: /images/1.webp
+image: /images/a-a-a.jpg
 category: Health
 excerpt: Discover comprehensive strategies for maintaining optimal health
   through balanced nutrition, including practical meal planning tips and
