@@ -1,7 +1,7 @@
 ---
 title: "Somali Culture and Traditions: Preserving Heritage for Future Generations"
 date: 2024-05-20T16:45:00.000Z
-image: /images/istockphoto-1438924216-612x612.jpg
+image: /images/1.webp
 category: Education
 excerpt: Explore the rich tapestry of Somali culture, traditions, and values,
   and learn how to pass them on to children in meaningful ways.
