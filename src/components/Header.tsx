@@ -301,6 +301,42 @@ const Header = () => {
                   <span className="text-sm font-medium">{t('social.youtube')}</span>
                 </a>
                 <a
+                  href="https://x.com/Miftahsom"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 text-text-secondary hover:text-blue-600 transition-colors"
+                >
+                  {/* X (Twitter) icon using lucide Twitter glyph as fallback */}
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M18.244 2H21l-6.373 7.297L22 22h-6.787l-4.77-6.217L5.8 22H3l6.82-7.817L2 2h6.92l4.31 5.715L18.244 2Zm-1.19 18.286h1.79L7.03 3.643H5.12l11.935 16.643Z"/>
+                  </svg>
+                  <span className="text-sm font-medium">X</span>
+                </a>
+                <a
+                  href="https://www.facebook.com/miftahsom1/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 text-text-secondary hover:text-blue-600 transition-colors"
+                >
+                  {/* Facebook */}
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M22 12a10 10 0 1 0-11.563 9.874v-6.985H7.898V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.242 0-1.63.771-1.63 1.562V12h2.773l-.443 2.889h-2.33v6.985A10.002 10.002 0 0 0 22 12Z"/>
+                  </svg>
+                  <span className="text-sm font-medium">{t('social.facebook')}</span>
+                </a>
+                <a
+                  href="https://www.instagram.com/miftahsom"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 text-text-secondary hover:text-blue-600 transition-colors"
+                >
+                  {/* Instagram */}
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2.2A2.8 2.8 0 1 0 14.8 12 2.8 2.8 0 0 0 12 9.2ZM18 6.5a1 1 0 1 1-1-1 1 1 0 0 1 1 1Z"/>
+                  </svg>
+                  <span className="text-sm font-medium">{t('social.instagram')}</span>
+                </a>
+                <a
                   href="https://tiktok.com/@miftahsom"
                   target="_blank"
                   rel="noopener noreferrer"
