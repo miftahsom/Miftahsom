@@ -6,7 +6,7 @@ media_folder: "public/images" # Media files will be stored in the repo under pub
 public_folder: "/images" # The src attribute for uploaded media will begin with /images
 
 # Enable previews
-display_url: https://miftahsom.netlify.app
+display_url: https://miftahsom.com
 
 collections:
   - name: "blog" # Used in routes, e.g., /admin/collections/blog
