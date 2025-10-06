@@ -63,7 +63,7 @@ const Footer = () => {
         <div className="mb-8 md:mb-12">
           <div className="flex items-center space-x-3 mb-4">
             <img 
-              src="/images/miftahsom-logo.png"
+              src="/images/logo.png"
               alt="Miftah Som logo"
               className="w-12 h-12 object-contain rounded-lg shadow-sm"
               loading="lazy"

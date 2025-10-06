@@ -101,14 +101,14 @@ const Header = () => {
           <Link to="/" className="flex items-center flex-shrink-0" aria-label="Miftah Som">
             {/* Desktop logo */}
             <img
-              src="/images/miftahsom-logo.png"
+              src="/images/logo.png"
               alt="Miftah Som"
               className="hidden sm:block h-10 w-auto object-contain"
               loading="eager"
             />
             {/* Mobile logo */}
             <img
-              src="/images/miftahsom-logo.png"
+              src="/images/logo.png"
               alt="Miftah Som"
               className="sm:hidden h-8 w-auto object-contain"
               loading="eager"
