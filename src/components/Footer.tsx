@@ -49,6 +49,7 @@ const Footer = () => {
   ];
 
   const socialLinks = [
+    { icon: Youtube, key: 'youtube', href: "https://www.youtube.com/@miftahsom", label: t('social.youtube') },
     { icon: null as any, key: 'tiktok', href: "https://www.tiktok.com/@miftahsom", label: 'TikTok' },
     { icon: Twitter, key: 'x', href: "https://x.com/Miftahsom", label: 'X' },
     { icon: Facebook, key: 'facebook', href: "https://www.facebook.com/miftahsom1/", label: t('social.facebook') },
