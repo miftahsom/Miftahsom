@@ -97,16 +97,23 @@ const Header = () => {
       <div className="container mx-auto px-4">
         {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
-          {/* Logo - Text Based */}
-          <Link to="/" className="flex items-center flex-shrink-0">
-            <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-foreground leading-tight">Miftah Som Academy</h1>
-              <p className="text-xs text-text-secondary">Health & Education</p>
-            </div>
-            {/* Mobile Logo Text */}
-            <div className="sm:hidden">
-              <h1 className="text-lg font-bold text-foreground">Miftah Som Academy</h1>
-            </div>
+          {/* Logo */}
+          <Link to="/" className="flex items-center flex-shrink-0" aria-label="Miftah Som">
+            {/* Desktop logo */}
+            <img
+              src="/images/miftahsom-logo.png"
+              alt="Miftah Som"
+              className="hidden sm:block h-10 w-auto object-contain"
+              loading="eager"
+            />
+            {/* Mobile logo */}
+            <img
+              src="/images/miftahsom-logo.png"
+              alt="Miftah Som"
+              className="sm:hidden h-8 w-auto object-contain"
+              loading="eager"
+            />
+            <span className="sr-only">Miftah Som Academy</span>
           </Link>
 
           {/* Desktop Navigation */}

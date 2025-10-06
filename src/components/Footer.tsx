@@ -62,9 +62,12 @@ const Footer = () => {
         {/* Company Info - Mobile First */}
         <div className="mb-8 md:mb-12">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-sm">
-              <span className="text-white font-bold text-xl">M</span>
-            </div>
+            <img 
+              src="/images/miftahsom-logo.png"
+              alt="Miftah Som logo"
+              className="w-12 h-12 object-contain rounded-lg shadow-sm"
+              loading="lazy"
+            />
             <div>
               <h3 className="text-lg font-bold text-foreground">Miftah Som Academy</h3>
               <p className="text-sm text-text-secondary">Health & Education</p>
