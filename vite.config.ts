@@ -81,6 +81,18 @@ const generatePostsJson = () => {
           const { content, data } = matter(raw);
           const html = marked.parse(content) as string;
           const slug = toSlug(file);
+          // Infer language if missing using filename suffix and Somali category labels
+          const base = path.basename(file).replace(/\.md$/, '');
+          const hasSomaliFilename = /(^|-)so$/i.test(base);
+          const categoryValue = (data as any).category as string | undefined;
+          const isSomaliCategory = [
+            'Caafimaad',
+            'Barbaarinta Carruurta',
+            'Waxbarasho',
+            'Quraanka',
+            'Magacyada Carruurta',
+          ].some(label => (categoryValue ?? '').toLowerCase() === label.toLowerCase());
+          const inferredLanguage = (data as any).language ?? (hasSomaliFilename || isSomaliCategory ? 'so' : 'en');
           return {
             title: data.title,
             date: data.date,
@@ -89,7 +101,7 @@ const generatePostsJson = () => {
             excerpt: data.excerpt,
             author: data.author ?? 'Miftah Som Academy',
             readTime: data.readTime ?? '5 min read',
-            language: data.language ?? 'en',
+            language: inferredLanguage,
             slug,
             html,
           };

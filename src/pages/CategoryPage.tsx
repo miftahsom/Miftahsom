@@ -66,22 +66,28 @@ const CategoryPage = () => {
   }, [language]);
 
   const categoryArticles = useMemo(() => {
-    // Map route to frontmatter category names for both languages
-    const routeToCategory: Record<string, { en: string; so: string }> = {
-      'health': { en: 'Health', so: 'Caafimaad' },
-      'parenting': { en: 'Parenting', so: 'Barbaarinta Carruurta' },
-      'education': { en: 'Education', so: 'Waxbarasho' },
-      'quran': { en: 'Quran', so: 'Quraanka' },
-      'baby-names': { en: 'Baby Names', so: 'Magacyada Carruurta' }
+    // Normalize any localized category name to a stable route slug
+    const nameToSlug = (name: string): string => {
+      const n = name.trim().toLowerCase();
+      const map: Record<string, string> = {
+        'health': 'health',
+        'caafimaad': 'health',
+        'parenting': 'parenting',
+        'barbaarinta carruurta': 'parenting',
+        'education': 'education',
+        'waxbarasho': 'education',
+        'quran': 'quran',
+        'quraanka': 'quran',
+        'baby names': 'baby-names',
+        'magacyada carruurta': 'baby-names',
+      };
+      return map[n] ?? n.replace(/\s+/g, '-');
     };
-    
-    const categoryMap = routeToCategory[currentCategory];
-    const desired = categoryMap ? categoryMap[language as 'en' | 'so'] : info.title;
-    const normalize = (v: string) => v.trim().toLowerCase();
-    const desiredNorm = normalize(desired);
-    const filtered = allPosts.filter(p => normalize(p.category) === desiredNorm);
+
+    const targetSlug = currentCategory;
+    const filtered = allPosts.filter(p => nameToSlug(p.category) === targetSlug);
     return filtered.length > 0 ? filtered : allPosts; // fallback to avoid empty grids
-  }, [allPosts, currentCategory, info.title, language]);
+  }, [allPosts, currentCategory]);
 
   return (
     <Layout>

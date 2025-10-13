@@ -84,15 +84,28 @@ export const loadBlogPosts = async (language: string = 'en'): Promise<BlogPost[]
           // If filename starts with YYYY-MM-DD-, strip the date for slug
           const slug = withoutExt.replace(/^\d{4}-\d{2}-\d{2}-/, "");
 
+          // Infer language when missing based on filename suffix and Somali category labels
+          const categoryValue = (data.category as string | undefined) ?? "General";
+          const isSomaliCategory = [
+            "Caafimaad",
+            "Barbaarinta Carruurta",
+            "Waxbarasho",
+            "Quraanka",
+            "Magacyada Carruurta",
+          ].some(label => label.toLowerCase() === categoryValue.toLowerCase());
+          const hasSomaliFilename = /(^|-)so$/i.test(withoutExt);
+          const inferredLanguage = (data as { language?: string } | undefined)?.language
+            ?? (hasSomaliFilename || isSomaliCategory ? "so" : "en");
+
           const post = {
             title: data.title ?? slug,
             date: data.date ?? new Date().toISOString().slice(0, 10),
             image: data.image ?? "/images/placeholder.svg",
-            category: (data.category as string | undefined) ?? "General",
+            category: categoryValue,
             excerpt: data.excerpt ?? "",
             author: data.author ?? "",
             readTime: data.readTime ?? "",
-            language: (data as any).language ?? "en",
+            language: inferredLanguage,
             slug,
             body
           } as BlogPost;
