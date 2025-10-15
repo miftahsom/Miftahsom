@@ -18,7 +18,8 @@ const ArticlePage = () => {
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const data = await loadBlogPosts(language);
+      // Load all posts then prefer current language via translations mapping
+      const data = await loadBlogPosts('all');
       if (mounted) setPosts(data);
     })();
     return () => {
@@ -26,7 +27,17 @@ const ArticlePage = () => {
     };
   }, [language]);
 
-  const article = useMemo(() => posts.find(p => p.slug === slug), [posts, slug]);
+  const article = useMemo(() => {
+    const base = posts.find(p => p.slug === slug);
+    if (!base) return undefined;
+    // If a translation exists for current UI language, pick that one
+    const targetSlug = base.translations?.[language];
+    if (targetSlug) {
+      const translated = posts.find(p => p.slug === targetSlug);
+      if (translated) return translated;
+    }
+    return base;
+  }, [posts, slug, language]);
   if (!article) {
     return (
       <Layout>
@@ -38,32 +49,57 @@ const ArticlePage = () => {
     );
   }
 
-  const relatedArticles = [
-    {
-      title: "Healthy Breakfast Ideas for Growing Children",
-      excerpt: "Start your child's day right with these nutritious and delicious breakfast options.",
-      image: heroHealthImage,
-      category: t('category.health.title'),
-      date: "2025-01-10",
-      href: "/articles/healthy-breakfast-children"
-    },
-    {
-      title: "Teaching Children About Healthy Food Choices", 
-      excerpt: "Practical strategies for educating kids about nutrition in an age-appropriate way.",
-      image: heroParentingImage,
-      category: t('category.parenting.title'),
-      date: "2025-01-08",
-      href: "/articles/teaching-healthy-food-choices"
-    },
-    {
-      title: "Islamic Principles of Eating and Nutrition",
-      excerpt: "Explore how Islamic teachings guide us toward mindful and healthy eating habits.",
-      image: heroQuranImage,
-      category: t('category.quran.title'),
-      date: "2025-01-05",
-      href: "/articles/islamic-principles-nutrition"
-    }
-  ];
+  const relatedArticles = useMemo(() => {
+    if (!article) return [] as BlogPost[];
+
+    const nameToSlug = (name: string): string => {
+      const n = (name || '').trim().toLowerCase();
+      const map: Record<string, string> = {
+        'health': 'health',
+        'caafimaad': 'health',
+        'parenting': 'parenting',
+        'barbaarinta carruurta': 'parenting',
+        'education': 'education',
+        'waxbarasho': 'education',
+        'quran': 'quran',
+        'quraanka': 'quran',
+        'baby names': 'baby-names',
+        'magacyada carruurta': 'baby-names',
+      };
+      return map[n] ?? n.replace(/\s+/g, '-');
+    };
+
+    const currentCategorySlug = nameToSlug(article.category);
+
+    // Pool: same category, exclude current article
+    const pool = posts.filter(p => p.slug !== article.slug && nameToSlug(p.category) === currentCategorySlug);
+
+    // Prefer versions matching current language; if not present, keep available version
+    const preferLanguage = (p: BlogPost): BlogPost => {
+      if (p.language === language) return p;
+      const target = p.translations?.[language];
+      if (target) {
+        const match = posts.find(q => q.slug === target);
+        if (match) return match;
+      }
+      return p;
+    };
+
+    const dedupBySlug = (list: BlogPost[]): BlogPost[] => {
+      const seen = new Set<string>();
+      const out: BlogPost[] = [];
+      for (const it of list) {
+        if (seen.has(it.slug)) continue;
+        seen.add(it.slug);
+        out.push(it);
+      }
+      return out;
+    };
+
+    const preferred = dedupBySlug(pool.map(preferLanguage));
+    preferred.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return preferred.slice(0, 3);
+  }, [article, posts, language]);
 
   return (
     <Layout>
@@ -191,15 +227,15 @@ const ArticlePage = () => {
         <section className="mt-16">
           <h3 className="text-2xl font-bold text-foreground mb-8">{t('article.related-articles')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {relatedArticles.map((article, index) => (
+            {relatedArticles.map((rel, index) => (
               <ArticleCard
                 key={index}
-                title={article.title}
-                excerpt={article.excerpt}
-                image={article.image}
-                category={article.category}
-                date={article.date}
-                href={article.href}
+                title={rel.title}
+                excerpt={rel.excerpt}
+                image={rel.image}
+                category={rel.category}
+                date={rel.date}
+                href={`/articles/${rel.slug}`}
               />
             ))}
           </div>

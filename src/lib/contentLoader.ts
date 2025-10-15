@@ -10,6 +10,7 @@ export interface BlogPost {
   language: string;
   slug: string;
   body: string;
+  translations?: Record<string, string>;
 }
 
 export interface Category {
@@ -30,7 +31,9 @@ export interface HomePage {
 
 // In a real implementation, you would fetch this from your CMS API
 // For now, we'll use the static content we created
-export const loadBlogPosts = async (language: string = 'en'): Promise<BlogPost[]> => {
+// Load blog posts. By default, returns posts of all languages to avoid hiding content
+// when the UI language is toggled. Pass languageFilter to restrict if needed.
+export const loadBlogPosts = async (languageFilter: 'en' | 'so' | 'all' = 'all'): Promise<BlogPost[]> => {
   console.log("=== Starting loadBlogPosts ===");
   console.log("Environment:", import.meta.env.MODE);
   console.log("Base URL:", import.meta.env.BASE_URL);
@@ -38,7 +41,7 @@ export const loadBlogPosts = async (language: string = 'en'): Promise<BlogPost[]
   // In production, prefer posts.json for reliability
   if (import.meta.env.PROD) {
     console.log("Production environment detected, using posts.json directly");
-    return await loadPostsFromJson(language);
+    return await loadPostsFromJson(languageFilter);
   }
   
   try {
@@ -107,7 +110,8 @@ export const loadBlogPosts = async (language: string = 'en'): Promise<BlogPost[]
             readTime: data.readTime ?? "",
             language: inferredLanguage,
             slug,
-            body
+            body,
+            translations: (data as any).translations as Record<string, string> | undefined
           } as BlogPost;
           
           console.log(`Successfully processed: ${post.title}`);
@@ -134,20 +138,22 @@ export const loadBlogPosts = async (language: string = 'en'): Promise<BlogPost[]
     console.log("Successfully processed", posts.length, "posts");
     
     // Filter posts by language
-    const filteredPosts = posts.filter(post => post.language === language);
-    console.log(`Filtered to ${filteredPosts.length} posts for language: ${language}`);
+    const finalPosts = languageFilter === 'all' 
+      ? posts 
+      : posts.filter(post => post.language === languageFilter);
+    console.log(`Posts after language filter (${languageFilter}): ${finalPosts.length}`);
     
-    filteredPosts.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
-    return filteredPosts;
+    finalPosts.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+    return finalPosts;
   } catch (error) {
     console.error("Error in loadBlogPosts:", error);
     console.log("Falling back to posts.json...");
-    return await loadPostsFromJson(language);
+    return await loadPostsFromJson(languageFilter);
   }
 };
 
 // Fallback function to load posts from the generated posts.json file
-const loadPostsFromJson = async (language: string = 'en'): Promise<BlogPost[]> => {
+const loadPostsFromJson = async (languageFilter: 'en' | 'so' | 'all' = 'all'): Promise<BlogPost[]> => {
   try {
     console.log("Loading posts from posts.json...");
     console.log("Current URL:", window.location.href);
@@ -182,10 +188,12 @@ const loadPostsFromJson = async (language: string = 'en'): Promise<BlogPost[]> =
     console.log("Converted posts:", posts.length);
     
     // Filter posts by language
-    const filteredPosts = posts.filter(post => post.language === language);
-    console.log(`Filtered to ${filteredPosts.length} posts for language: ${language}`);
+    const finalPosts = languageFilter === 'all' 
+      ? posts 
+      : posts.filter(post => post.language === languageFilter);
+    console.log(`Posts after language filter (${languageFilter}): ${finalPosts.length}`);
     
-    return filteredPosts;
+    return finalPosts;
   } catch (error) {
     console.error("Error loading posts from posts.json:", error);
     console.error("Error details:", {
