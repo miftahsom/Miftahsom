@@ -87,8 +87,24 @@ const CategoryPage = () => {
 
     const targetSlug = currentCategory;
     const filtered = allPosts.filter(p => nameToSlug(p.category) === targetSlug);
-    return filtered.length > 0 ? filtered : allPosts; // fallback to avoid empty grids
-  }, [allPosts, currentCategory]);
+
+    // Group by base slug and prefer current UI language
+    const normalizeBaseKey = (slug: string): string => slug.replace(/-so$/i, '');
+    const byBase = new Map<string, BlogPost[]>();
+    for (const p of filtered) {
+      const baseFromTranslations = p.translations?.en || p.translations?.so;
+      const baseKey = baseFromTranslations || normalizeBaseKey(p.slug);
+      if (!byBase.has(baseKey)) byBase.set(baseKey, []);
+      byBase.get(baseKey)!.push(p);
+    }
+    const selected: BlogPost[] = [];
+    for (const [, group] of byBase.entries()) {
+      const match = group.find(g => g.language === language) || group[0];
+      selected.push(match);
+    }
+    selected.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return selected.length > 0 ? selected : allPosts;
+  }, [allPosts, currentCategory, language]);
 
   return (
     <Layout>

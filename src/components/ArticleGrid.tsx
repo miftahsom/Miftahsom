@@ -37,6 +37,27 @@ const ArticleGrid = () => {
     };
   }, [language]);
 
+  const normalizeBaseKey = (slug: string): string => slug.replace(/-so$/i, '');
+
+  const preferLanguageAndDedup = (items: BlogPost[], lang: string): BlogPost[] => {
+    const byBase = new Map<string, BlogPost[]>();
+    for (const p of items) {
+      const baseFromTranslations = p.translations?.en || p.translations?.so;
+      const baseKey = baseFromTranslations || normalizeBaseKey(p.slug);
+      if (!byBase.has(baseKey)) byBase.set(baseKey, []);
+      byBase.get(baseKey)!.push(p);
+    }
+    const selected: BlogPost[] = [];
+    for (const [, group] of byBase.entries()) {
+      const match = group.find(g => g.language === lang) || group[0];
+      selected.push(match);
+    }
+    selected.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return selected;
+  };
+
+  const visibleArticles = preferLanguageAndDedup(articles, language);
+
   if (loading) {
     return (
       <section className="container mx-auto px-4 lg:px-6 py-8">
@@ -57,7 +78,7 @@ const ArticleGrid = () => {
     );
   }
 
-  if (articles.length === 0) {
+  if (visibleArticles.length === 0) {
     return (
       <section className="container mx-auto px-4 lg:px-6 py-8">
         <div className="text-center">
@@ -81,7 +102,7 @@ const ArticleGrid = () => {
         
         {/* Articles List - Al Jazeera Style */}
         <div className="space-y-4">
-          {articles.map((article, index) => (
+          {visibleArticles.map((article, index) => (
             <Link key={index} to={`/articles/${article.slug}`} className="block group">
               <div className="flex gap-3 pb-4 border-b border-gray-100 last:border-b-0">
                 {/* Image */}
@@ -122,7 +143,7 @@ const ArticleGrid = () => {
       {/* Desktop: 3 Column Grid */}
       <div className="hidden lg:block py-8">
         <div className="grid grid-cols-3 gap-6">
-          {articles.map((article, index) => (
+          {visibleArticles.map((article, index) => (
             <ArticleCard
               key={index}
               title={article.title}
