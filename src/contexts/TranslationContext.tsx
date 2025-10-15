@@ -248,7 +248,7 @@ const translations = {
 const TranslationContext = createContext<TranslationContextType | undefined>(undefined);
 
 export const TranslationProvider: React.FC<TranslationProviderProps> = ({ children }) => {
-  const [language, setLanguage] = useState<string>('en');
+  const [language, setLanguage] = useState<string>('so');
 
   const toggleLanguage = useCallback(() => {
     setLanguage(prev => prev === 'en' ? 'so' : 'en');
@@ -287,7 +287,7 @@ export const useTranslation = (): TranslationContextType => {
     console.error('useTranslation must be used within a TranslationProvider');
     // Return a fallback context to prevent crashes
     return {
-      language: 'en',
+      language: 'so',
       toggleLanguage: () => {},
       t: (key: string) => key
     };
