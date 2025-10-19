@@ -3,12 +3,13 @@ import { useParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import Sidebar from '@/components/Sidebar';
 import ArticleCard from '@/components/ArticleCard';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { Calendar, User, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
 import { useTranslation } from '@/contexts/TranslationContext';
+import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 import heroHealthImage from '@/assets/hero-health-nutrition.jpg';
 import heroParentingImage from '@/assets/hero-parenting.jpg';
 import heroQuranImage from '@/assets/hero-quran.jpg';
-import { loadBlogPosts, type BlogPost } from '@/lib/contentLoader';
 
 const ArticlePage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -199,9 +200,10 @@ const ArticlePage = () => {
   }, [article, posts, language]);
 
   return (
-    <Layout>
-      {/* Article Header */}
-      <article className="container mx-auto px-4 py-8">
+    <ErrorBoundary>
+      <Layout>
+        {/* Article Header */}
+        <article className="container mx-auto px-4 py-8">
         <div className="flex gap-8">
           {/* Main Article Content */}
           <div className="flex-1 max-w-4xl">
@@ -339,6 +341,7 @@ const ArticlePage = () => {
         </section>
       </article>
     </Layout>
+    </ErrorBoundary>
   );
 };
 
