@@ -37,6 +37,7 @@ export const loadBlogPosts = async (languageFilter: 'en' | 'so' | 'all' = 'all')
   console.log("=== Starting loadBlogPosts ===");
   console.log("Environment:", import.meta.env.MODE);
   console.log("Base URL:", import.meta.env.BASE_URL);
+  console.log("Language filter:", languageFilter);
   
   // In production, prefer posts.json for reliability
   if (import.meta.env.PROD) {

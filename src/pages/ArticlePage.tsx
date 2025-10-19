@@ -47,9 +47,11 @@ const ArticlePage = () => {
   }, [language]);
 
   const article = useMemo(() => {
+    console.log("=== ArticlePage Debug ===");
     console.log("Looking for article with slug:", slug);
     console.log("Total posts available:", posts.length);
     console.log("Available slugs:", posts.map(p => p.slug));
+    console.log("Current language:", language);
     
     if (!slug || posts.length === 0) {
       console.log("No slug or posts available");
@@ -58,6 +60,7 @@ const ArticlePage = () => {
     
     const base = posts.find(p => p.slug === slug);
     console.log("Found base article:", base ? base.title : "Not found");
+    console.log("Base article details:", base);
     
     if (!base) {
       console.log("Base article not found, checking for similar slugs...");
@@ -78,6 +81,7 @@ const ArticlePage = () => {
     }
     
     console.log("Returning base article:", base.title);
+    console.log("Article body preview:", base.body ? base.body.substring(0, 100) + "..." : "No body");
     return base;
   }, [posts, slug, language]);
 
