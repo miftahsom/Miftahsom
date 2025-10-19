@@ -86,6 +86,7 @@ export const loadBlogPosts = async (languageFilter: 'en' | 'so' | 'all' = 'all')
           const withoutExt = fileName.replace(/\.md$/i, "");
           // If filename starts with YYYY-MM-DD-, strip the date for slug
           const slug = withoutExt.replace(/^\d{4}-\d{2}-\d{2}-/, "");
+          console.log(`Processing file: ${fileName} -> slug: ${slug}`);
 
           // Infer language when missing based on filename suffix and Somali category labels
           const categoryValue = (data.category as string | undefined) ?? "General";
@@ -173,19 +174,22 @@ const loadPostsFromJson = async (languageFilter: 'en' | 'so' | 'all' = 'all'): P
     console.log("First post:", postsData[0]);
     
     // Convert the JSON data to BlogPost format
-    const posts: BlogPost[] = postsData.map((post: any) => ({
-      title: post.title || 'Untitled',
-      date: post.date || new Date().toISOString().slice(0, 10),
-      image: post.image || '/images/placeholder.svg',
-      category: post.category || 'General',
-      excerpt: post.excerpt || '',
-      author: post.author || 'Miftah Som Academy',
-      readTime: post.readTime || '5 min read',
-      language: post.language || 'en',
-      slug: post.slug || 'untitled',
-      body: post.html || '<p>Content not available</p>', // The JSON contains 'html' instead of 'body'
-      translations: post.translations || {}
-    }));
+    const posts: BlogPost[] = postsData.map((post: any) => {
+      console.log(`Loading post from JSON: ${post.slug} - ${post.title}`);
+      return {
+        title: post.title || 'Untitled',
+        date: post.date || new Date().toISOString().slice(0, 10),
+        image: post.image || '/images/placeholder.svg',
+        category: post.category || 'General',
+        excerpt: post.excerpt || '',
+        author: post.author || 'Miftah Som Academy',
+        readTime: post.readTime || '5 min read',
+        language: post.language || 'en',
+        slug: post.slug || 'untitled',
+        body: post.html || '<p>Content not available</p>', // The JSON contains 'html' instead of 'body'
+        translations: post.translations || {}
+      };
+    });
     
     console.log("Converted posts:", posts.length);
     

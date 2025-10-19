@@ -2,7 +2,7 @@
 title: Magacyada Gabdhaha || Xarafka "A" Soomaali ahaan
 date: 2025-10-01T09:00:18.955Z
 image: /images/a-a-a.jpg
-category: Health
+category: Magacyada Carruurta
 excerpt: Afnaan, Axlaam, Asmaa, Amaal, Ayaan, Aamino, Aasiya, Amiira, Ashawaaq, Az-haar
 author: "P. A: Sadik Mohamed"
 readTime: 5 min read

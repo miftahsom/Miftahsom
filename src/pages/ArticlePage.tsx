@@ -46,15 +46,37 @@ const ArticlePage = () => {
   }, [language]);
 
   const article = useMemo(() => {
-    if (!slug || posts.length === 0) return undefined;
+    console.log("Looking for article with slug:", slug);
+    console.log("Total posts available:", posts.length);
+    console.log("Available slugs:", posts.map(p => p.slug));
+    
+    if (!slug || posts.length === 0) {
+      console.log("No slug or posts available");
+      return undefined;
+    }
+    
     const base = posts.find(p => p.slug === slug);
-    if (!base) return undefined;
+    console.log("Found base article:", base ? base.title : "Not found");
+    
+    if (!base) {
+      console.log("Base article not found, checking for similar slugs...");
+      // Try to find articles with similar slugs
+      const similar = posts.filter(p => p.slug.includes(slug) || slug.includes(p.slug));
+      console.log("Similar slugs found:", similar.map(p => ({ slug: p.slug, title: p.title })));
+      return undefined;
+    }
+    
     // If a translation exists for current UI language, pick that one
     const targetSlug = base.translations?.[language];
+    console.log("Target translation slug:", targetSlug);
+    
     if (targetSlug) {
       const translated = posts.find(p => p.slug === targetSlug);
+      console.log("Found translated article:", translated ? translated.title : "Not found");
       if (translated) return translated;
     }
+    
+    console.log("Returning base article:", base.title);
     return base;
   }, [posts, slug, language]);
 
