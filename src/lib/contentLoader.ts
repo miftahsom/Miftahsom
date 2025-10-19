@@ -61,7 +61,7 @@ export const loadBlogPosts = async (languageFilter: 'en' | 'so' | 'all' = 'all')
       
       if (altEntries.length === 0) {
         console.log("No files found with any pattern, trying posts.json fallback...");
-        return await loadPostsFromJson(language);
+        return await loadPostsFromJson(languageFilter);
       }
       
       // Use alternative entries
@@ -129,7 +129,8 @@ export const loadBlogPosts = async (languageFilter: 'en' | 'so' | 'all' = 'all')
             readTime: "1 min read",
             language: "en",
             slug: `error-${index}`,
-            body: "<p>Error loading content</p>"
+            body: "<p>Error loading content</p>",
+            translations: {}
           } as BlogPost;
         }
       })
@@ -173,16 +174,17 @@ const loadPostsFromJson = async (languageFilter: 'en' | 'so' | 'all' = 'all'): P
     
     // Convert the JSON data to BlogPost format
     const posts: BlogPost[] = postsData.map((post: any) => ({
-      title: post.title,
-      date: post.date,
-      image: post.image,
-      category: post.category,
-      excerpt: post.excerpt,
-      author: post.author,
-      readTime: post.readTime,
-      language: post.language,
-      slug: post.slug,
-      body: post.html // The JSON contains 'html' instead of 'body'
+      title: post.title || 'Untitled',
+      date: post.date || new Date().toISOString().slice(0, 10),
+      image: post.image || '/images/placeholder.svg',
+      category: post.category || 'General',
+      excerpt: post.excerpt || '',
+      author: post.author || 'Miftah Som Academy',
+      readTime: post.readTime || '5 min read',
+      language: post.language || 'en',
+      slug: post.slug || 'untitled',
+      body: post.html || '<p>Content not available</p>', // The JSON contains 'html' instead of 'body'
+      translations: post.translations || {}
     }));
     
     console.log("Converted posts:", posts.length);

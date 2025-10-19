@@ -15,12 +15,30 @@ const ArticlePage = () => {
   const { t, language } = useTranslation();
 
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     let mounted = true;
     (async () => {
-      // Load all posts then prefer current language via translations mapping
-      const data = await loadBlogPosts('all');
-      if (mounted) setPosts(data);
+      try {
+        setLoading(true);
+        setError(null);
+        console.log("Loading posts for article page...");
+        // Load all posts then prefer current language via translations mapping
+        const data = await loadBlogPosts('all');
+        console.log("Loaded posts:", data.length);
+        if (mounted) {
+          setPosts(data);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error("Error loading posts:", err);
+        if (mounted) {
+          setError("Failed to load article content");
+          setLoading(false);
+        }
+      }
     })();
     return () => {
       mounted = false;
@@ -28,6 +46,7 @@ const ArticlePage = () => {
   }, [language]);
 
   const article = useMemo(() => {
+    if (!slug || posts.length === 0) return undefined;
     const base = posts.find(p => p.slug === slug);
     if (!base) return undefined;
     // If a translation exists for current UI language, pick that one
@@ -38,12 +57,68 @@ const ArticlePage = () => {
     }
     return base;
   }, [posts, slug, language]);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-text-secondary">{t('article.loading')}</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4 text-red-600">{t('article.error-loading')}</h1>
+            <p className="text-text-secondary mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              {t('article.try-again')}
+            </button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Show not found state
   if (!article) {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-16">
           <h1 className="text-2xl font-bold mb-4">{t('article.not-found') || 'Article not found'}</h1>
-          <p className="text-text-secondary">{t('article.not-found-desc') || 'The article you are looking for may have been moved or unpublished.'}</p>
+          <p className="text-text-secondary mb-4">{t('article.not-found-desc') || 'The article you are looking for may have been moved or unpublished.'}</p>
+          
+          {/* Debug information in development */}
+          {import.meta.env.DEV && (
+            <div className="mt-6 p-4 bg-gray-100 rounded-lg text-sm">
+              <h3 className="font-semibold mb-2">{t('article.debug-info')}:</h3>
+              <p><strong>{t('article.looking-for-slug')}:</strong> {slug}</p>
+              <p><strong>{t('article.current-language')}:</strong> {language}</p>
+              <p><strong>{t('article.total-posts')}:</strong> {posts.length}</p>
+              <p><strong>{t('article.available-slugs')}:</strong> {posts.map(p => p.slug).join(', ')}</p>
+            </div>
+          )}
+          
+          <div className="mt-6">
+            <a 
+              href="/" 
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              {t('article.go-home')}
+            </a>
+          </div>
         </div>
       </Layout>
     );

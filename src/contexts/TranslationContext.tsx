@@ -94,6 +94,21 @@ const translations = {
     'social.instagram': 'Instagram',
     'social.youtube': 'YouTube',
     'social.tiktok': 'TikTok',
+    'social.x': 'X',
+    
+    // UI Elements
+    'ui.previous': 'Previous',
+    'ui.next': 'Next',
+    'ui.loading': 'Loading...',
+    'ui.error': 'Error',
+    'ui.try-again': 'Try Again',
+    'ui.go-home': 'Go Home',
+    'ui.search': 'Search',
+    'ui.menu': 'Menu',
+    'ui.close': 'Close',
+    'ui.toggle-sidebar': 'Toggle Sidebar',
+    'ui.previous-slide': 'Previous slide',
+    'ui.next-slide': 'Next slide',
     
     // Article Grid & Hero Section
     'articles.latest': 'Latest Articles',
@@ -114,6 +129,21 @@ const translations = {
     'article.share': 'Share',
     'article.author-bio': 'Expert contributor with years of experience in health, parenting, and education.',
     'article.related-articles': 'Related Articles',
+    'article.loading': 'Loading article...',
+    'article.error-loading': 'Error Loading Article',
+    'article.try-again': 'Try Again',
+    'article.go-home': 'Go Home',
+    'article.debug-info': 'Debug Information',
+    'article.looking-for-slug': 'Looking for slug',
+    'article.current-language': 'Current language',
+    'article.total-posts': 'Total posts loaded',
+    'article.available-slugs': 'Available slugs',
+    
+    // Footer specific
+    'footer.health-education': 'Health & Education',
+    'footer.email': 'miftahsom@gmail.com',
+    'footer.phone': '+252907756127',
+    'footer.location': 'Global Online Platform',
     
     // Categories
     'category.health.title': 'Health',
@@ -210,6 +240,21 @@ const translations = {
     'social.instagram': 'Instagram', 
     'social.youtube': 'YouTube',
     'social.tiktok': 'TikTok',
+    'social.x': 'X',
+    
+    // UI Elements
+    'ui.previous': 'Hore',
+    'ui.next': 'Xiga',
+    'ui.loading': 'La soo gelinayo...',
+    'ui.error': 'Qalad',
+    'ui.try-again': 'Mar Kale Isku Day',
+    'ui.go-home': 'Guriga Tag',
+    'ui.search': 'Raadi',
+    'ui.menu': 'Menu',
+    'ui.close': 'Xidh',
+    'ui.toggle-sidebar': 'Sidebar-ka Toggle',
+    'ui.previous-slide': 'Slide hore',
+    'ui.next-slide': 'Slide xiga',
     
     // Article Grid & Hero Section
     'articles.latest': 'Maqaallo Cusub',
@@ -230,6 +275,21 @@ const translations = {
     'article.share': 'Wadaag',
     'article.author-bio': 'Kuwa ka qayb qaata takhasuusi ah oo leh khibrad dheeraad ah oo ku saabsan caafimaadka, barbaarinta, iyo waxbarashada.',
     'article.related-articles': 'Maqaallo La Xidhiidha',
+    'article.loading': 'Maqaal la soo gelinayo...',
+    'article.error-loading': 'Qalad Maqaal La Soo Gelinayo',
+    'article.try-again': 'Mar Kale Isku Day',
+    'article.go-home': 'Guriga Tag',
+    'article.debug-info': 'Macluumaadka Baadhista',
+    'article.looking-for-slug': 'Raadineysa slug',
+    'article.current-language': 'Luqadda hadda',
+    'article.total-posts': 'Wadarta maqaallada la soo geliyay',
+    'article.available-slugs': 'Slug-ada la heli karo',
+    
+    // Footer specific
+    'footer.health-education': 'Caafimaad & Waxbarasho',
+    'footer.email': 'miftahsom@gmail.com',
+    'footer.phone': '+252907756127',
+    'footer.location': 'Platformka Online-ka Adduunka',
     
     // Categories
     'category.health.title': 'Caafimaad',

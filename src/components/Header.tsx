@@ -318,7 +318,7 @@ const Header = () => {
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M18.244 2H21l-6.373 7.297L22 22h-6.787l-4.77-6.217L5.8 22H3l6.82-7.817L2 2h6.92l4.31 5.715L18.244 2Zm-1.19 18.286h1.79L7.03 3.643H5.12l11.935 16.643Z"/>
                   </svg>
-                  <span className="text-sm font-medium">X</span>
+                  <span className="text-sm font-medium">{t('social.x')}</span>
                 </a>
                 <a
                   href="https://www.facebook.com/miftahsom1/"

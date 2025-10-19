@@ -50,8 +50,8 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: Youtube, key: 'youtube', href: "https://www.youtube.com/@miftahsom", label: t('social.youtube') },
-    { icon: null as any, key: 'tiktok', href: "https://www.tiktok.com/@miftahsom", label: 'TikTok' },
-    { icon: Twitter, key: 'x', href: "https://x.com/Miftahsom", label: 'X' },
+    { icon: null as any, key: 'tiktok', href: "https://www.tiktok.com/@miftahsom", label: t('social.tiktok') },
+    { icon: Twitter, key: 'x', href: "https://x.com/Miftahsom", label: t('social.x') },
     { icon: Facebook, key: 'facebook', href: "https://www.facebook.com/miftahsom1/", label: t('social.facebook') },
     { icon: Instagram, key: 'instagram', href: "https://www.instagram.com/miftahsom", label: t('social.instagram') },
   ];
@@ -71,7 +71,7 @@ const Footer = () => {
             />
             <div>
               <h3 className="text-lg font-bold text-foreground">Miftah Som Academy</h3>
-              <p className="text-sm text-text-secondary">Health & Education</p>
+              <p className="text-sm text-text-secondary">{t('footer.health-education')}</p>
             </div>
           </div>
           <p className="text-sm text-text-secondary leading-relaxed mb-6">
@@ -84,19 +84,19 @@ const Footer = () => {
               <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
                 <Mail className="w-4 h-4 text-blue-600" />
               </div>
-              <span>miftahsom@gmail.com</span>
+              <span>{t('footer.email')}</span>
             </div>
             <div className="flex items-center space-x-3 text-sm text-text-secondary">
               <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
                 <Phone className="w-4 h-4 text-blue-600" />
               </div>
-              <span>+252907756127</span>
+              <span>{t('footer.phone')}</span>
             </div>
             <div className="flex items-center space-x-3 text-sm text-text-secondary">
               <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
                 <MapPin className="w-4 h-4 text-blue-600" />
               </div>
-              <span>Global Online Platform</span>
+              <span>{t('footer.location')}</span>
             </div>
           </div>
 
