@@ -40,8 +40,9 @@ export const loadBlogPosts = async (languageFilter: 'en' | 'so' | 'all' = 'all')
   console.log("Language filter:", languageFilter);
   
   // In production, prefer posts.json for reliability
-  if (import.meta.env.PROD) {
-    console.log("Production environment detected, using posts.json directly");
+  // Also use posts.json in development for consistency
+  if (import.meta.env.PROD || true) {
+    console.log("Using posts.json for content loading");
     return await loadPostsFromJson(languageFilter);
   }
   
